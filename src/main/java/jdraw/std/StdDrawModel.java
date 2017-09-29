@@ -5,76 +5,117 @@
 
 package jdraw.std;
 
-import java.util.LinkedList;
+import java.util.*;
 
-import jdraw.framework.DrawCommandHandler;
-import jdraw.framework.DrawModel;
-import jdraw.framework.DrawModelListener;
-import jdraw.framework.Figure;
+import jdraw.framework.*;
+import org.apache.log4j.Logger;
 
 /**
  * Provide a standard behavior for the drawing model. This class initially does not implement the methods
  * in a proper way.
  * It is part of the course assignments to do so.
- * @author TODO add your name here
  *
+ * @author Luca Ingold
  */
-public class StdDrawModel implements DrawModel {
+public class StdDrawModel implements DrawModel, FigureListener {
 
-	@Override
-	public void addFigure(Figure f) {
-		// TODO to be implemented
-		System.out.println("StdDrawModel.addFigure has to be implemented");
-	}
+    private static final Logger logger = Logger.getLogger(StdDrawModel.class);
 
-	@Override
-	public Iterable<Figure> getFigures() {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.getFigures has to be implemented");
-		return new LinkedList<Figure>(); // Only guarantees, that the application starts -- has to be replaced !!!
-	}
+    /**
+     * List witch contains all figures in correct order
+     */
+    private final Stack<Figure> figures = new Stack<>();
 
-	@Override
-	public void removeFigure(Figure f) {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.removeFigure has to be implemented");
-	}
+    /**
+     * Send changes to this listener.
+     */
+    private List<DrawModelListener> listeners = new LinkedList<>();
 
-	@Override
-	public void addModelChangeListener(DrawModelListener listener) {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.addModelChangeListener has to be implemented");
-	}
+    @Override
+    public void figureChanged(FigureEvent e) {
+        invokeListener(e.getFigure(), DrawModelEvent.Type.FIGURE_CHANGED);
+    }
 
-	@Override
-	public void removeModelChangeListener(DrawModelListener listener) {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.removeModelChangeListener has to be implemented");
-	}
+    private void invokeListener(Figure f, DrawModelEvent.Type t) {
+        DrawModelEvent e = new DrawModelEvent(this, f, t);
+        listeners.forEach(l -> l.modelChanged(e));
+    }
 
-	/** The draw command handler. Initialized here with a dummy implementation. */
-	// TODO initialize with your implementation of the undo/redo-assignment.
-	private DrawCommandHandler handler = new EmptyDrawCommandHandler();
+    @Override
+    public void addFigure(Figure f) {
+        if (f != null) {
+            figures.add(f);
+            f.addFigureListener(this);
+            invokeListener(f, DrawModelEvent.Type.FIGURE_ADDED);
+        }
+        logger.trace("addFigure");
+    }
 
-	/**
-	 * Retrieve the draw command handler in use.
-	 * @return the draw command handler.
-	 */
-	@Override
-	public DrawCommandHandler getDrawCommandHandler() {
-		return handler;
-	}
+    @Override
+    public Iterable<Figure> getFigures() {
+//        logger.trace("getFigures");
+        return Collections.unmodifiableList(figures);
+    }
 
-	@Override
-	public void setFigureIndex(Figure f, int index) {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.setFigureIndex has to be implemented");
-	}
+    @Override
+    public void removeFigure(Figure f) {
+        if (figures.remove(f)) {
+            f.removeFigureListener(this);
+            invokeListener(f, DrawModelEvent.Type.FIGURE_REMOVED);
+            logger.trace("removeFigure");
+        }
+    }
 
-	@Override
-	public void removeAllFigures() {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.removeAllFigures has to be implemented");
-	}
+    @Override
+    public void addModelChangeListener(DrawModelListener listener) {
+        logger.trace("addModelChangeListener");
+        if (listener != null && !listeners.contains(listener))
+            listeners.add(listener);
+    }
+
+    @Override
+    public void removeModelChangeListener(DrawModelListener listener) {
+        listeners.remove(listener);
+        logger.trace("removeModelChangeListener");
+    }
+
+    /**
+     * The draw command handler. Initialized here with a dummy implementation.
+     */
+    // TODO initialize with your implementation of the undo/redo-assignment.
+    private DrawCommandHandler handler = new EmptyDrawCommandHandler();
+
+    /**
+     * Retrieve the draw command handler in use.
+     *
+     * @return the draw command handler.
+     */
+    @Override
+    public DrawCommandHandler getDrawCommandHandler() {
+        return handler;
+    }
+
+    @Override
+    public void setFigureIndex(Figure f, int index) {
+        if (!figures.contains(f)) {
+            throw new IllegalArgumentException();
+        } else if (index >= figures.size() || index < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        figures.remove(f);
+        figures.add(index, f);
+        invokeListener(f, DrawModelEvent.Type.DRAWING_CHANGED);
+        logger.trace("setFigureIndex");
+    }
+
+    @Override
+    public void removeAllFigures() {
+        new LinkedList<>(figures).forEach(f -> {
+            f.removeFigureListener(this);
+            removeFigure(f);
+        });
+        invokeListener(null, DrawModelEvent.Type.DRAWING_CLEARED);
+        logger.trace("removeAllFigures");
+    }
 
 }

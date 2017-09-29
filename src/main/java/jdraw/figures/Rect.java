@@ -9,9 +9,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.LinkedList;
 import java.util.List;
 
+import javafx.beans.Observable;
 import jdraw.framework.Figure;
+import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureHandle;
 import jdraw.framework.FigureListener;
 
@@ -21,12 +24,14 @@ import jdraw.framework.FigureListener;
  * @author Christoph Denzler
  *
  */
-public class Rect implements Figure {
+public class Rect implements Figure, Cloneable {
 	/**
 	 * Use the java.awt.Rectangle in order to save/reuse code.
 	 */
 	private java.awt.Rectangle rectangle;
-	
+
+	private final List<FigureListener> listeners = new LinkedList<>();
+
 	/**
 	 * Create a new rectangle of the given dimension.
 	 * @param x the x-coordinate of the upper left corner of the rectangle
@@ -52,14 +57,18 @@ public class Rect implements Figure {
 	
 	@Override
 	public void setBounds(Point origin, Point corner) {
+		Rectangle orig = new java.awt.Rectangle(rectangle);
 		rectangle.setFrameFromDiagonal(origin, corner);
-		// TODO notification of change
+		if(!orig.equals(rectangle))
+			notifyObservers(new FigureEvent(this));
 	}
 
 	@Override
 	public void move(int dx, int dy) {
-		rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
-		// TODO notification of change
+		if(dx != 0 || dy != 0) {
+			rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
+			notifyObservers(new FigureEvent(this));
+		}
 	}
 
 	@Override
@@ -84,17 +93,22 @@ public class Rect implements Figure {
 
 	@Override
 	public void addFigureListener(FigureListener listener) {
-		// TODO Auto-generated method stub
+		if(!listeners.contains(listener) && listener != null)
+			listeners.add(listener);
 	}
 
 	@Override
 	public void removeFigureListener(FigureListener listener) {
-		// TODO Auto-generated method stub
+		listeners.remove(listener);
+	}
+
+	private void notifyObservers(FigureEvent e){
+		listeners.forEach(l -> l.figureChanged(e));
 	}
 
 	@Override
 	public Figure clone() {
-		return null;
+		return new Rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 	}
 
 }
