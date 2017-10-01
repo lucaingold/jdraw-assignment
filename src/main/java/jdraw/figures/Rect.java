@@ -103,8 +103,10 @@ public class Rect implements Figure, Cloneable {
 	}
 
 	private void notifyObservers(FigureEvent e){
-		listeners.forEach(l -> l.figureChanged(e));
-	}
+        new LinkedList<>(listeners).forEach(l -> {
+            l.figureChanged(e);
+        });
+    }
 
 	@Override
 	public Figure clone() {
