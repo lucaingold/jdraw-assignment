@@ -8,7 +8,7 @@ import java.awt.Point;
 import org.junit.Before;
 import org.junit.Test;
 
-import jdraw.figures.Rect;
+import jdraw.figures.figure.Rect;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureListener;
