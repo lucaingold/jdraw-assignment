@@ -7,54 +7,26 @@ import jdraw.framework.FigureEvent;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-public class Oval extends AbstractFigure {
-
-    java.awt.geom.Ellipse2D circle;
+public class Oval extends AbstractRectangularFigure {
 
     public Oval(int x, int y, int w, int h) {
-        circle = new Ellipse2D.Float(x, y, w, h);
+        super(new Point(x, y), w,h);
     }
 
     @Override
     public void draw(Graphics g) {
+        Rectangle rectangle = getBounds();
         Graphics2D g2 = (Graphics2D) g;
-        g2.setPaint(Color.WHITE);
+        java.awt.geom.Ellipse2D circle = new Ellipse2D.Float(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        g2.setPaint(Color.YELLOW);
         g2.fill(circle);
         g2.setPaint(Color.BLACK);
         g2.draw(circle);
     }
 
     @Override
-    public void move(int dx, int dy) {
-        if (dx != 0 || dy != 0) {
-            if (circle.getX() != dx && circle.getY() != dy) {
-                circle.setFrame(circle.getX() + dx, circle.getY() + dy, circle.getWidth(), circle.getHeight());
-                notifyObservers(new FigureEvent(this));
-            }
-        }
-    }
-
-    @Override
-    public boolean contains(int x, int y) {
-        return circle.contains(x, y);
-    }
-
-    @Override
-    public void setBounds(Point origin, Point corner) {
-        java.awt.geom.Ellipse2D orig = (Ellipse2D) circle.clone();
-        circle.setFrameFromDiagonal(origin, corner);
-        if (!orig.equals(circle))
-            notifyObservers(new FigureEvent(this));
-
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        return circle.getBounds();
-    }
-
-    @Override
     public Figure clone() {
+        Rectangle circle = getBounds();
         return new Oval((int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight());
     }
 }

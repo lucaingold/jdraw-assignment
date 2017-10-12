@@ -18,13 +18,7 @@ import jdraw.framework.FigureEvent;
  *
  * @author Christoph Denzler
  */
-public class Rect extends AbstractFigure implements Cloneable {
-    /**
-     * Use the java.awt.Rectangle in order to save/reuse code.
-     */
-    private java.awt.Rectangle rectangle;
-
-
+public class Rect extends AbstractRectangularFigure{
     /**
      * Create a new rectangle of the given dimension.
      *
@@ -34,7 +28,7 @@ public class Rect extends AbstractFigure implements Cloneable {
      * @param h the rectangle's height
      */
     public Rect(int x, int y, int w, int h) {
-        rectangle = new java.awt.Rectangle(x, y, w, h);
+        super(new Point(x, y), w,h);
     }
 
     /**
@@ -44,42 +38,16 @@ public class Rect extends AbstractFigure implements Cloneable {
      */
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.WHITE);
+        Rectangle rectangle = getBounds();
+        g.setColor(Color.orange);
         g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
         g.setColor(Color.BLACK);
         g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
     @Override
-    public void setBounds(Point origin, Point corner) {
-        Rectangle orig = new java.awt.Rectangle(rectangle);
-        rectangle.setFrameFromDiagonal(origin, corner);
-        if (!orig.equals(rectangle))
-            notifyObservers(new FigureEvent(this));
-    }
-
-    @Override
-    public void move(int dx, int dy) {
-        if (dx != 0 || dy != 0) {
-            if (rectangle.x != dx && rectangle.y != dy) {
-                rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
-                notifyObservers(new FigureEvent(this));
-            }
-        }
-    }
-
-    @Override
-    public boolean contains(int x, int y) {
-        return rectangle.contains(x, y);
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        return rectangle.getBounds();
-    }
-
     public Figure clone() {
+        Rectangle rectangle = getBounds();
         return new Rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
-
 }
