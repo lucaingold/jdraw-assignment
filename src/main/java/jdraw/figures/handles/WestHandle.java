@@ -10,8 +10,7 @@ import java.awt.event.MouseEvent;
 public class WestHandle extends AbstractHandle {
 
     public WestHandle(Figure figure) {
-        super(figure);
-        this.setResizeCursor(Cursor.W_RESIZE_CURSOR);
+        super(figure, Cursor.W_RESIZE_CURSOR);
     }
 
     @Override

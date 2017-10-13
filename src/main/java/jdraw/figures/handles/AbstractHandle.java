@@ -12,17 +12,14 @@ public abstract class AbstractHandle implements FigureHandle {
 
     private Point corner;
 
-    private int resizeCursor;
+    private final int resizeCursor;
 
-    protected void setResizeCursor(int resizeCursor) {
+    protected AbstractHandle(Figure figure, int resizeCursor) {
+        this.owner = figure;
         this.resizeCursor = resizeCursor;
     }
 
-    protected AbstractHandle(Figure figure) {
-        this.owner = figure;
-    }
-
-    public Point getCorner() {
+    protected Point getCorner() {
         return corner;
     }
 

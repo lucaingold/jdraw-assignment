@@ -10,8 +10,7 @@ import java.awt.event.MouseEvent;
 public class NorthEastHandle extends AbstractHandle {
 
     public NorthEastHandle(Figure figure) {
-        super(figure);
-        this.setResizeCursor(Cursor.NE_RESIZE_CURSOR);
+        super(figure, Cursor.NE_RESIZE_CURSOR);
     }
 
     @Override
