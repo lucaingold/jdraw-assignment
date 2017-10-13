@@ -1,12 +1,19 @@
 package jdraw.figures.figure;
 
+import jdraw.figures.handles.EastHandle;
+import jdraw.figures.handles.NorthHandle;
+import jdraw.figures.handles.SouthHandle;
+import jdraw.figures.handles.WestHandle;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
+import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Line extends AbstractFigure {
 
@@ -37,15 +44,13 @@ public class Line extends AbstractFigure {
         }
     }
 
-//    public void moveEndpoint(int dx, int dy) {
-//        Point2D p2 = line.getP2();
-//        if (line.getX1() != dx && line.getX2() != dy) {
-//            p2.setLocation(p2.getX() + dx, p2.getY() + dy);
-//            line.setLine(line.getP1(), p2);
-//            notifyObservers(new FigureEvent(this));
-//        }
-//
-//    }
+    @Override
+    public java.util.List<FigureHandle> getHandles() {
+        List<FigureHandle> handles = new LinkedList<>();
+        handles.add(new NorthHandle(this));
+        handles.add(new SouthHandle(this));
+        return handles;
+    }
 
     @Override
     public boolean contains(int x, int y) {

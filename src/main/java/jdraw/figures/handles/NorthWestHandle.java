@@ -15,7 +15,7 @@ public class NorthWestHandle extends AbstractHandle {
 
     @Override
     public Point getLocation() {
-        return null;
+        return getOwner().getBounds().getLocation();
     }
 
     public void startInteraction(int x, int y, MouseEvent e, DrawView v) {

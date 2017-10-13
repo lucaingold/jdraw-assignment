@@ -16,11 +16,18 @@ public class EastHandle extends AbstractHandle {
 
     @Override
     public Point getLocation() {
-        return null;
+        Rectangle r = getOwner().getBounds();
+        return new Point(r.x + r.width, r.y + (r.height / 2));
     }
 
     @Override
-    public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
+    public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
+        Rectangle r = this.getOwner().getBounds();
+        getOwner().setBounds(new Point(r.x,r.y), new Point(x, getCorner().y));
+    }
 
+    public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
+        Rectangle r = this.getOwner().getBounds();
+        this.setCorner(new Point(r.x+r.width, r.y + r.height));
     }
 }

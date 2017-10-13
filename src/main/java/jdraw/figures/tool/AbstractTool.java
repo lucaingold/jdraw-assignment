@@ -19,7 +19,7 @@ public abstract class AbstractTool implements DrawTool {
     /**
      * the image resource path.
      */
-    protected static final String IMAGES = "/images/";
+    private static final String IMAGES = "/images/";
 
     /**
      * the icon for the tool.
@@ -163,7 +163,7 @@ public abstract class AbstractTool implements DrawTool {
 
     protected abstract Figure getNewFigure(Point p);
 
-    public Point getAnchor() {
+    protected Point getAnchor() {
         return anchor;
     }
 }

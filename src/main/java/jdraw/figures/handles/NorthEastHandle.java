@@ -16,11 +16,13 @@ public class NorthEastHandle extends AbstractHandle {
 
     @Override
     public Point getLocation() {
-        return null;
+        Rectangle r = getOwner().getBounds();
+        return new Point(r.x + r.width, r. y);
     }
 
     @Override
     public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
-
+        Rectangle r = this.getOwner().getBounds();
+        this.setCorner(new Point(r.x, r.y + r.height));
     }
 }

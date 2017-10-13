@@ -8,19 +8,17 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public abstract class AbstractHandle implements FigureHandle {
-
     private Figure owner;
 
     private Point corner;
 
-    public int resizeCursor;
+    private int resizeCursor;
 
-    public void setResizeCursor(int resizeCursor) {
+    protected void setResizeCursor(int resizeCursor) {
         this.resizeCursor = resizeCursor;
     }
 
-    public AbstractHandle(Figure figure) {
-
+    protected AbstractHandle(Figure figure) {
         this.owner = figure;
     }
 
@@ -28,10 +26,9 @@ public abstract class AbstractHandle implements FigureHandle {
         return corner;
     }
 
-    public void setCorner(Point corner) {
+    protected void setCorner(Point corner) {
         this.corner = corner;
     }
-
 
     @Override
     public Figure getOwner() {
@@ -41,7 +38,7 @@ public abstract class AbstractHandle implements FigureHandle {
     @Override
     public void draw(Graphics g) {
         Point loc = getLocation();
-        g.setColor(Color.WHITE);
+        g.setColor(Color.RED);
         g.fillRect(loc.x - 3, loc.y - 3, 6, 6);
         g.setColor(Color.BLACK);
         g.drawRect(loc.x - 3, loc.y - 3, 6, 6);
@@ -60,9 +57,6 @@ public abstract class AbstractHandle implements FigureHandle {
     }
 
     @Override
-    public abstract void startInteraction(int x, int y, MouseEvent e, DrawView v);
-
-    @Override
     public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
         owner.setBounds(new Point(x, y), corner);
     }
@@ -71,5 +65,4 @@ public abstract class AbstractHandle implements FigureHandle {
     public void stopInteraction(int x, int y, MouseEvent e, DrawView v) {
         corner = null;
     }
-
 }

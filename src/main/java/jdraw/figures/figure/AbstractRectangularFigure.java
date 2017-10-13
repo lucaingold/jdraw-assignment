@@ -25,9 +25,7 @@ public abstract class AbstractRectangularFigure extends AbstractFigure {
     }
 
     @Override
-    public Rectangle getBounds() {
-        return new Rectangle(rectangle);
-    }
+    public Rectangle getBounds() { return rectangle; }
 
     @Override
     public boolean contains(int x, int y) {

@@ -17,11 +17,19 @@ public class SouthHandle extends AbstractHandle {
 
     @Override
     public Point getLocation() {
-        return null;
+        Rectangle r = getOwner().getBounds();
+        return new Point(r.x + r.width / 2, r.y + r.height);
+    }
+
+    @Override
+    public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
+        Rectangle r = this.getOwner().getBounds();
+        getOwner().setBounds(new Point(r.x, r.y), new Point(getCorner().x,y));
     }
 
     @Override
     public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
-
+        Rectangle r = this.getOwner().getBounds();
+        this.setCorner(new Point(r.x+r.width,r.y + r.height));
     }
 }
