@@ -23,32 +23,39 @@ public abstract class AbstractHandleState implements HandleState {
         this.color = color;
     }
 
+    protected abstract Point getCorner();
+
+    @Override
     public Cursor getCursor() {
         return Cursor.getPredefinedCursor(resizeCursor);
     }
 
-    protected abstract Point getCorner();
-
+    @Override
     public void setColor(Color color){
         this.color = color;
     }
 
+    @Override
     public Color getColor() {
         return color;
     }
 
-    public void setOwner(AbstractFigure figure) {
-        this.owner = figure;
+    @Override
+    public void setOwner(AbstractFigure owner) {
+        this.owner = owner;
     }
 
+    @Override
     public AbstractFigure getOwner() {
         return owner;
     }
 
+    @Override
     public void startInteraction() {
         corner = getCorner();
     }
 
+    @Override
     public void stopInteraction(int x, int y) {
         corner = null;
     }

@@ -37,10 +37,8 @@ public class Handle implements FigureHandle {
         Point loc = getLocation();
         g.setColor(state.getColor());
         g.fillOval(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
-//        g.fillRect(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
         g.setColor(Color.BLACK);
         g.drawOval(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
-//        g.drawRect(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
     }
 
     @Override

@@ -33,7 +33,6 @@ public class NorthHandleState extends AbstractHandleState {
         return p;
     }
 
-
     @Override
     public Point getCorner() {
         // SW
