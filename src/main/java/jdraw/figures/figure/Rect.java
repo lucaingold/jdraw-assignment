@@ -11,9 +11,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-import jdraw.figures.handles.inheritance.*;
-import jdraw.figures.handles.state.Handle;
-import jdraw.figures.handles.state.states.*;
+import jdraw.figures.handle.state.Handle;
+import jdraw.figures.handle.state.states.*;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 
@@ -34,6 +33,8 @@ public class Rect extends AbstractRectangularFigure{
     public Rect(int x, int y, int w, int h) {
         super(new Point(x, y), w,h);
     }
+
+    private final Color color = new Color((int)(Math.random() * 0x1000000));
 
     @Override
     public java.util.List<FigureHandle> getHandles() {
@@ -68,7 +69,7 @@ public class Rect extends AbstractRectangularFigure{
     @Override
     public void draw(Graphics g) {
         Rectangle rectangle = getBounds();
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(color);
         g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
         g.setColor(Color.BLACK);
         g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);

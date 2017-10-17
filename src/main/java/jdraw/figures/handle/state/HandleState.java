@@ -1,4 +1,4 @@
-package jdraw.figures.handles.state;
+package jdraw.figures.handle.state;
 
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;

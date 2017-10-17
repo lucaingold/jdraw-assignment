@@ -1,4 +1,4 @@
-package jdraw.figures.handles.inheritance;
+package jdraw.figures.handle.inheritance;
 
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
@@ -6,21 +6,21 @@ import jdraw.framework.Figure;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class SouthEastHandle extends AbstractHandle {
+public class NorthEastHandle extends AbstractHandle {
 
-    public SouthEastHandle(Figure figure) {
-        super(figure, Cursor.SE_RESIZE_CURSOR);
+    public NorthEastHandle(Figure figure) {
+        super(figure, Cursor.NE_RESIZE_CURSOR);
     }
 
     @Override
     public Point getLocation() {
         Rectangle r = getOwner().getBounds();
-        return new Point(r.x + r.width, r.y + r.height );
+        return new Point(r.x + r.width, r. y);
     }
 
     @Override
     public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
         Rectangle r = this.getOwner().getBounds();
-        this.setCorner(getOwner().getBounds().getLocation());
+        this.setCorner(new Point(r.x, r.y + r.height));
     }
 }

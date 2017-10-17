@@ -1,4 +1,4 @@
-package jdraw.figures.handles.state.states;
+package jdraw.figures.handle.state.states;
 
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;
@@ -6,20 +6,19 @@ import jdraw.framework.DrawView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class SouthWestHandleState extends AbstractHandleState {
+public class SouthEastHandleState extends AbstractHandleState {
 
-
-    public SouthWestHandleState(AbstractFigure figure) {
-        super(figure, Cursor.SW_RESIZE_CURSOR);
+    public SouthEastHandleState(AbstractFigure figure) {
+        super(figure, Cursor.SE_RESIZE_CURSOR);
     }
 
-    public SouthWestHandleState(AbstractFigure figure, Color color) {
-        super(figure, Cursor.SW_RESIZE_CURSOR, color);
+    public SouthEastHandleState(AbstractFigure figure, Color color) {
+        super(figure, Cursor.SE_RESIZE_CURSOR, color);
     }
 
     @Override
     public AbstractHandleState getHorizontalFlipState() {
-        return new SouthEastHandleState(owner);
+        return new SouthWestHandleState(owner);
     }
 
     @Override
@@ -27,20 +26,18 @@ public class SouthWestHandleState extends AbstractHandleState {
         return new NorthWestHandleState(owner);
     }
 
-
     @Override
     public Point getLocation() {
         Point p = owner.getBounds().getLocation();
+        p.x += owner.getBounds().width;
         p.y += owner.getBounds().height;
         return p;
     }
 
     @Override
     public Point getCorner() {
-        // NE
-        Point p = owner.getBounds().getLocation();
-        p.x += owner.getBounds().width;
-        return p;
+        // NW
+        return owner.getBounds().getLocation();
     }
 
     @Override
@@ -48,14 +45,13 @@ public class SouthWestHandleState extends AbstractHandleState {
         Rectangle r = owner.getBounds();
         owner.setBounds(corner, new Point(x,y));
 
-        if (x > r.x + r.width) {
+        if (x < r.x) {
             owner.flipHandlesHorizontal();
         }
         if (y < r.y) {
             owner.flipHandlesVertical();
         }
     }
-
 
 
 }

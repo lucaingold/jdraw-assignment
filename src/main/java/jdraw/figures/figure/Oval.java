@@ -1,11 +1,7 @@
 package jdraw.figures.figure;
 
-import jdraw.figures.handles.inheritance.EastHandle;
-import jdraw.figures.handles.inheritance.NorthHandle;
-import jdraw.figures.handles.inheritance.SouthHandle;
-import jdraw.figures.handles.inheritance.WestHandle;
-import jdraw.figures.handles.state.Handle;
-import jdraw.figures.handles.state.states.*;
+import jdraw.figures.handle.state.Handle;
+import jdraw.figures.handle.state.states.*;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 

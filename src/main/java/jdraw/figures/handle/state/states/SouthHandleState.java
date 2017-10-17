@@ -1,4 +1,4 @@
-package jdraw.figures.handles.state.states;
+package jdraw.figures.handle.state.states;
 
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;
@@ -6,31 +6,31 @@ import jdraw.framework.DrawView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class EastHandleState extends AbstractHandleState {
+public class SouthHandleState extends AbstractHandleState {
 
-    public EastHandleState(AbstractFigure figure) {
-        super(figure, Cursor.E_RESIZE_CURSOR);
+    public SouthHandleState(AbstractFigure figure) {
+        super(figure, Cursor.S_RESIZE_CURSOR);
     }
 
-    public EastHandleState(AbstractFigure figure, Color color) {
-        super(figure, Cursor.E_RESIZE_CURSOR, color);
+    public SouthHandleState(AbstractFigure figure, Color color) {
+        super(figure, Cursor.S_RESIZE_CURSOR, color);
     }
 
     @Override
     public AbstractHandleState getHorizontalFlipState() {
-        return new WestHandleState(owner);
+        return this;
     }
 
     @Override
     public AbstractHandleState getVerticalFlipState() {
-        return this;
+        return new NorthHandleState(owner);
     }
 
     @Override
     public Point getLocation() {
         Point p = owner.getBounds().getLocation();
-        p.x += owner.getBounds().width;
-        p.y += owner.getBounds().height / 2;
+        p.x += owner.getBounds().width / 2;
+        p.y += owner.getBounds().height;
         return p;
     }
 
@@ -43,10 +43,14 @@ public class EastHandleState extends AbstractHandleState {
     @Override
     public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
         Rectangle r = owner.getBounds();
-        owner.setBounds(corner, new Point(x,r.y+r.height));
+        owner.setBounds(corner, new Point(corner.x+r.width,y));
 
-        if (x < r.x) {
-            owner.flipHandlesHorizontal();
+        if (y < r.y) {
+            owner.flipHandlesVertical();
         }
     }
+
+
+
+
 }

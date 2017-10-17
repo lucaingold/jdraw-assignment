@@ -1,18 +1,15 @@
 package jdraw.figures.figure;
 
-import jdraw.figures.handles.*;
-import jdraw.figures.handles.state.Handle;
-import jdraw.figures.handles.state.states.*;
+import jdraw.figures.handle.state.Handle;
+import jdraw.figures.handle.state.states.*;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureHandle;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Line extends AbstractFigure {
 
@@ -47,10 +44,10 @@ public class Line extends AbstractFigure {
     public java.util.List<FigureHandle> getHandles() {
         handles = new LinkedList<>();
 
-        handles.add(new Handle(new NorthWestHandleState(this)));
-        handles.add(new Handle(new SouthEastHandleState(this)));
-        handles.add(new Handle(new SouthWestHandleState(this)));
-        handles.add(new Handle(new NorthEastHandleState(this)));
+        handles.add(new Handle(new NorthWestHandleState(this, Color.RED)));
+        handles.add(new Handle(new SouthEastHandleState(this, Color.BLUE)));
+        handles.add(new Handle(new SouthWestHandleState(this, Color.YELLOW)));
+        handles.add(new Handle(new NorthEastHandleState(this, Color.CYAN)));
 
         return handles;
     }

@@ -1,4 +1,4 @@
-package jdraw.figures.handles.inheritance;
+package jdraw.figures.handle.inheritance;
 
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;

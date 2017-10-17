@@ -1,6 +1,6 @@
 package jdraw.figures.figure;
 
-import jdraw.figures.handles.state.Handle;
+import jdraw.figures.handle.state.Handle;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureHandle;

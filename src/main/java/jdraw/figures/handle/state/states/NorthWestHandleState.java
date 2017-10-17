@@ -1,4 +1,4 @@
-package jdraw.figures.handles.state.states;
+package jdraw.figures.handle.state.states;
 
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;
@@ -6,38 +6,36 @@ import jdraw.framework.DrawView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class NorthHandleState extends AbstractHandleState {
+public class NorthWestHandleState extends AbstractHandleState {
 
-    public NorthHandleState(AbstractFigure figure) {
-        super(figure, Cursor.N_RESIZE_CURSOR);
+    public NorthWestHandleState(AbstractFigure figure) {
+        super(figure, Cursor.NW_RESIZE_CURSOR);
     }
 
-    public NorthHandleState(AbstractFigure figure, Color color) {
-        super(figure, Cursor.N_RESIZE_CURSOR, color);
+    public NorthWestHandleState(AbstractFigure figure, Color color) {
+        super(figure, Cursor.NW_RESIZE_CURSOR, color);
     }
 
     @Override
     public AbstractHandleState getHorizontalFlipState() {
-        return this;
+        return new NorthEastHandleState(owner);
     }
 
     @Override
     public AbstractHandleState getVerticalFlipState() {
-        return new SouthHandleState(owner);
+        return new SouthWestHandleState(owner);
     }
 
     @Override
     public Point getLocation() {
-        Point p = owner.getBounds().getLocation();
-        p.x += owner.getBounds().width / 2;
-        return p;
+        return owner.getBounds().getLocation();
     }
-
 
     @Override
     public Point getCorner() {
-        // SW
+        //SW
         Point p = owner.getBounds().getLocation();
+        p.x += owner.getBounds().width;
         p.y += owner.getBounds().height;
         return p;
     }
@@ -45,12 +43,17 @@ public class NorthHandleState extends AbstractHandleState {
     @Override
     public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
         Rectangle r = owner.getBounds();
-        owner.setBounds(corner, new Point(corner.x+r.width,y));
+        owner.setBounds(new Point(x,y), corner);
 
+        if (x > r.x + r.width) {
+            owner.flipHandlesHorizontal();
+        }
         if (y > r.y + r.height) {
             owner.flipHandlesVertical();
         }
+
     }
+
 
 
 }

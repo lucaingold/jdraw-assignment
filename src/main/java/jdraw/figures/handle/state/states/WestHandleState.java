@@ -1,4 +1,4 @@
-package jdraw.figures.handles.state.states;
+package jdraw.figures.handle.state.states;
 
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;
@@ -6,34 +6,37 @@ import jdraw.framework.DrawView;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class NorthWestHandleState extends AbstractHandleState {
+public class WestHandleState extends AbstractHandleState {
 
-    public NorthWestHandleState(AbstractFigure figure) {
-        super(figure, Cursor.NW_RESIZE_CURSOR);
+    public WestHandleState(AbstractFigure figure) {
+        super(figure, Cursor.W_RESIZE_CURSOR);
     }
 
-    public NorthWestHandleState(AbstractFigure figure, Color color) {
-        super(figure, Cursor.NW_RESIZE_CURSOR, color);
+    public WestHandleState(AbstractFigure figure, Color color) {
+        super(figure, Cursor.W_RESIZE_CURSOR, color);
     }
 
     @Override
     public AbstractHandleState getHorizontalFlipState() {
-        return new NorthEastHandleState(owner);
+        return new EastHandleState(owner);
     }
 
     @Override
     public AbstractHandleState getVerticalFlipState() {
-        return new SouthWestHandleState(owner);
+        return this;
     }
+
 
     @Override
     public Point getLocation() {
-        return owner.getBounds().getLocation();
+        Point p = owner.getBounds().getLocation();
+        p.y += owner.getBounds().height / 2;
+        return p;
     }
 
     @Override
     public Point getCorner() {
-        //SW
+        // SE
         Point p = owner.getBounds().getLocation();
         p.x += owner.getBounds().width;
         p.y += owner.getBounds().height;
@@ -43,17 +46,13 @@ public class NorthWestHandleState extends AbstractHandleState {
     @Override
     public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
         Rectangle r = owner.getBounds();
-        owner.setBounds(new Point(x,y), corner);
+        owner.setBounds(new Point(x,r.y), corner);
 
         if (x > r.x + r.width) {
             owner.flipHandlesHorizontal();
         }
-        if (y > r.y + r.height) {
-            owner.flipHandlesVertical();
-        }
 
     }
-
 
 
 }

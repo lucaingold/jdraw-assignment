@@ -1,4 +1,4 @@
-package jdraw.figures.handles.inheritance;
+package jdraw.figures.handle.inheritance;
 
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
@@ -6,21 +6,22 @@ import jdraw.framework.Figure;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class NorthHandle extends AbstractHandle {
-    public NorthHandle(Figure figure) {
-        super(figure, Cursor.N_RESIZE_CURSOR);
+public class WestHandle extends AbstractHandle {
+
+    public WestHandle(Figure figure) {
+        super(figure, Cursor.W_RESIZE_CURSOR);
     }
 
     @Override
     public Point getLocation() {
         Rectangle r = getOwner().getBounds();
-        return new Point(r.x + r.width / 2, r.y);
+        return new Point(r.x, r.y + r.height / 2);
     }
 
     @Override
     public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
         Rectangle r = this.getOwner().getBounds();
-        getOwner().setBounds(new Point(getCorner().x,y), new Point(r.x+r.width, r.y+r.height));
+        getOwner().setBounds(new Point(x,getCorner().y), new Point(r.x+r.width, r.y+r.height));
     }
 
     @Override

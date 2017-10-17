@@ -1,11 +1,9 @@
-package jdraw.figures.handles.state.states;
+package jdraw.figures.handle.state.states;
 
 import jdraw.figures.figure.AbstractFigure;
-import jdraw.figures.handles.state.HandleState;
-import jdraw.framework.DrawView;
+import jdraw.figures.handle.state.HandleState;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public abstract class AbstractHandleState implements HandleState {
 

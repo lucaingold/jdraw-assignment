@@ -1,4 +1,4 @@
-package jdraw.figures.handles.state;
+package jdraw.figures.handle.inheritance;
 
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
@@ -7,35 +7,37 @@ import jdraw.framework.FigureHandle;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class Handle implements FigureHandle {
+public abstract class AbstractHandle implements FigureHandle {
+    private Figure owner;
+
+    private Point corner;
 
     private static final int HANDLE_SIZE = 6;
 
-    private HandleState state;
+    private final int resizeCursor;
 
-    public Handle(HandleState state ) {
-        this.state = state;
+    protected AbstractHandle(Figure figure, int resizeCursor) {
+        this.owner = figure;
+        this.resizeCursor = resizeCursor;
     }
 
-    public void setState(HandleState s) {
-        state = s;
+    protected Point getCorner() {
+        return corner;
     }
 
+    protected void setCorner(Point corner) {
+        this.corner = corner;
+    }
 
     @Override
     public Figure getOwner() {
-        return state.getOwner();
-    }
-
-    @Override
-    public Point getLocation() {
-        return state.getLocation();
+        return owner;
     }
 
     @Override
     public void draw(Graphics g) {
         Point loc = getLocation();
-        g.setColor(state.getColor());
+        g.setColor(Color.RED);
         g.fillRect(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
         g.setColor(Color.BLACK);
         g.drawRect(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
@@ -43,7 +45,7 @@ public class Handle implements FigureHandle {
 
     @Override
     public Cursor getCursor() {
-        return state.getCursor();
+        return Cursor.getPredefinedCursor(resizeCursor);
     }
 
     @Override
@@ -54,31 +56,12 @@ public class Handle implements FigureHandle {
     }
 
     @Override
-    public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
-        state.startInteraction();
-    }
-
-    @Override
     public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
-        state.dragInteraction(x, y, e, v);
+        owner.setBounds(new Point(x, y), corner);
     }
 
     @Override
     public void stopInteraction(int x, int y, MouseEvent e, DrawView v) {
-        state.stopInteraction(x, y);
+        corner = null;
     }
-
-    public void flipHandleHorizontal() {
-        state = state.getHorizontalFlipState();
-        state.setOwner(state.getOwner());
-        state.startInteraction();
-    }
-
-    public void flipHandleVertical() {
-        state = state.getVerticalFlipState();
-        state.setOwner(state.getOwner());
-        state.startInteraction();
-    }
-
-
 }
