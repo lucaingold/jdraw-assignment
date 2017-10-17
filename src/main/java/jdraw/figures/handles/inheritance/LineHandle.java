@@ -1,15 +1,14 @@
-package jdraw.figures.handles;
+package jdraw.figures.handles.inheritance;
 
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class WestHandle extends AbstractHandle {
+public class LineHandle extends AbstractHandle {
 
-    public WestHandle(Figure figure) {
+    public LineHandle(Figure figure) {
         super(figure, Cursor.W_RESIZE_CURSOR);
     }
 

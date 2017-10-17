@@ -1,18 +1,17 @@
 package jdraw.figures.figure;
 
-import jdraw.figures.handles.EastHandle;
-import jdraw.figures.handles.NorthHandle;
-import jdraw.figures.handles.SouthHandle;
-import jdraw.figures.handles.WestHandle;
-import jdraw.framework.DrawContext;
+import jdraw.figures.handles.inheritance.EastHandle;
+import jdraw.figures.handles.inheritance.NorthHandle;
+import jdraw.figures.handles.inheritance.SouthHandle;
+import jdraw.figures.handles.inheritance.WestHandle;
+import jdraw.figures.handles.state.Handle;
+import jdraw.figures.handles.state.states.*;
 import jdraw.framework.Figure;
-import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Oval extends AbstractRectangularFigure {
 
@@ -33,11 +32,18 @@ public class Oval extends AbstractRectangularFigure {
 
     @Override
     public java.util.List<FigureHandle> getHandles() {
-        List<FigureHandle> handles = new LinkedList<>();
-        handles.add(new NorthHandle(this));
-        handles.add(new SouthHandle(this));
-        handles.add(new EastHandle(this));
-        handles.add(new WestHandle(this));
+        handles = new LinkedList<>();
+
+//        handles.add(new NorthHandle(this));
+//        handles.add(new SouthHandle(this));
+//        handles.add(new EastHandle(this));
+//        handles.add(new WestHandle(this));
+
+        handles.add(new Handle(new NorthHandleState(this)));
+        handles.add(new Handle(new SouthHandleState(this)));
+        handles.add(new Handle(new EastHandleState(this)));
+        handles.add(new Handle(new WestHandleState(this)));
+
         return handles;
     }
 

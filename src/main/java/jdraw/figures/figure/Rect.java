@@ -10,11 +10,11 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
-import java.util.List;
 
-import jdraw.figures.handles.*;
+import jdraw.figures.handles.inheritance.*;
+import jdraw.figures.handles.state.Handle;
+import jdraw.figures.handles.state.states.*;
 import jdraw.framework.Figure;
-import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureHandle;
 
 /**
@@ -37,18 +37,28 @@ public class Rect extends AbstractRectangularFigure{
 
     @Override
     public java.util.List<FigureHandle> getHandles() {
-        List<FigureHandle> handles = new LinkedList<>();
-        handles.add(new NorthHandle(this));
-        handles.add(new SouthHandle(this));
-        handles.add(new EastHandle(this));
-        handles.add(new WestHandle(this));
-        handles.add(new NorthEastHandle(this));
-        handles.add(new NorthWestHandle(this));
-        handles.add(new SouthWestHandle(this));
-        handles.add(new SouthEastHandle(this));
+        handles = new LinkedList<>();
+
+//        handles.add(new NorthHandle(this));
+//        handles.add(new SouthHandle(this));
+//        handles.add(new EastHandle(this));
+//        handles.add(new WestHandle(this));
+//        handles.add(new NorthEastHandle(this));
+//        handles.add(new NorthWestHandle(this));
+//        handles.add(new SouthWestHandle(this));
+//        handles.add(new SouthEastHandle(this));
+
+        handles.add(new Handle(new NorthHandleState(this, Color.BLUE)));
+        handles.add(new Handle(new SouthHandleState(this, Color.RED)));
+        handles.add(new Handle(new EastHandleState(this, Color.GREEN)));
+        handles.add(new Handle(new WestHandleState(this, Color.YELLOW)));
+        handles.add(new Handle(new NorthEastHandleState(this, Color.CYAN)));
+        handles.add(new Handle(new NorthWestHandleState(this, Color.MAGENTA)));
+        handles.add(new Handle(new SouthWestHandleState(this, Color.ORANGE)));
+        handles.add(new Handle(new SouthEastHandleState(this, Color.PINK)));
+
         return handles;
     }
-
 
     /**
      * Draw the rectangle to the given graphics context.
@@ -58,7 +68,7 @@ public class Rect extends AbstractRectangularFigure{
     @Override
     public void draw(Graphics g) {
         Rectangle rectangle = getBounds();
-        g.setColor(Color.orange);
+        g.setColor(Color.LIGHT_GRAY);
         g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
         g.setColor(Color.BLACK);
         g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);

@@ -1,9 +1,8 @@
 package jdraw.figures.figure;
 
-import jdraw.figures.handles.EastHandle;
-import jdraw.figures.handles.NorthHandle;
-import jdraw.figures.handles.SouthHandle;
-import jdraw.figures.handles.WestHandle;
+import jdraw.figures.handles.*;
+import jdraw.figures.handles.state.Handle;
+import jdraw.figures.handles.state.states.*;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureHandle;
@@ -46,9 +45,13 @@ public class Line extends AbstractFigure {
 
     @Override
     public java.util.List<FigureHandle> getHandles() {
-        List<FigureHandle> handles = new LinkedList<>();
-        handles.add(new NorthHandle(this));
-        handles.add(new SouthHandle(this));
+        handles = new LinkedList<>();
+
+        handles.add(new Handle(new NorthWestHandleState(this)));
+        handles.add(new Handle(new SouthEastHandleState(this)));
+        handles.add(new Handle(new SouthWestHandleState(this)));
+        handles.add(new Handle(new NorthEastHandleState(this)));
+
         return handles;
     }
 

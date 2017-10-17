@@ -63,7 +63,7 @@ public abstract class AbstractTool implements DrawTool {
     }
 
     /**
-     * Initializes a new Rectangle object by setting an anchor
+     * Initializes a new Rectangle object by setting an corner
      * point where the mouse was pressed. A new Rectangle is then
      * added to the model.
      *

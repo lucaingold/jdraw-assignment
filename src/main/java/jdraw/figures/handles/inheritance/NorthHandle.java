@@ -1,33 +1,31 @@
-package jdraw.figures.handles;
+package jdraw.figures.handles.inheritance;
 
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
-import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class SouthHandle extends AbstractHandle {
-
-    public SouthHandle(Figure figure) {
-        super(figure, Cursor.S_RESIZE_CURSOR);
+public class NorthHandle extends AbstractHandle {
+    public NorthHandle(Figure figure) {
+        super(figure, Cursor.N_RESIZE_CURSOR);
     }
 
     @Override
     public Point getLocation() {
         Rectangle r = getOwner().getBounds();
-        return new Point(r.x + r.width / 2, r.y + r.height);
+        return new Point(r.x + r.width / 2, r.y);
     }
 
     @Override
     public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
         Rectangle r = this.getOwner().getBounds();
-        getOwner().setBounds(new Point(r.x, r.y), new Point(getCorner().x,y));
+        getOwner().setBounds(new Point(getCorner().x,y), new Point(r.x+r.width, r.y+r.height));
     }
 
     @Override
     public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
         Rectangle r = this.getOwner().getBounds();
-        this.setCorner(new Point(r.x+r.width,r.y + r.height));
+        this.setCorner(new Point(r.x,r.y));
     }
 }

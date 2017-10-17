@@ -1,7 +1,6 @@
 package jdraw.figures.figure;
 
-import jdraw.figures.handles.EastHandle;
-import jdraw.figures.handles.NorthHandle;
+import jdraw.figures.handles.state.Handle;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureHandle;
@@ -32,4 +31,22 @@ public abstract class AbstractFigure implements Figure {
     }
 
     public abstract Figure clone();
+
+    //###### Handles State Pattern #####
+
+    protected List<FigureHandle> handles = new LinkedList<>();
+
+    public void flipHandlesHorizontal() {
+        for (FigureHandle handle: handles) {
+            ((Handle) handle).flipHandleHorizontal();
+        }
+    }
+
+    public void flipHandlesVertical() {
+        for (FigureHandle handle: handles) {
+            ((Handle) handle).flipHandleVertical();
+        }
+    }
+
+
 }
