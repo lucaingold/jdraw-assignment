@@ -12,6 +12,8 @@ public abstract class AbstractHandle implements FigureHandle {
 
     private Point corner;
 
+    private static final int HANDLE_SIZE = 6;
+
     private final int resizeCursor;
 
     protected AbstractHandle(Figure figure, int resizeCursor) {
@@ -36,9 +38,9 @@ public abstract class AbstractHandle implements FigureHandle {
     public void draw(Graphics g) {
         Point loc = getLocation();
         g.setColor(Color.RED);
-        g.fillRect(loc.x - 3, loc.y - 3, 6, 6);
+        g.fillRect(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
         g.setColor(Color.BLACK);
-        g.drawRect(loc.x - 3, loc.y - 3, 6, 6);
+        g.drawRect(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
     }
 
     @Override
@@ -49,7 +51,7 @@ public abstract class AbstractHandle implements FigureHandle {
     @Override
     public boolean contains(int x, int y) {
         Point loc = getLocation();
-        Rectangle rect = new Rectangle(loc.x - 3, loc.y - 3, 6, 6);
+        Rectangle rect = new Rectangle(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
         return rect.contains(new Point(x, y));
     }
 
