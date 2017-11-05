@@ -34,7 +34,9 @@ public class Rect extends AbstractRectangularFigure{
         super(new Point(x, y), w,h);
     }
 
-    private final Color color = new Color((int)(Math.random() * 0x1000000));
+//    private final Color color = new Color((int)(Math.random() * 0x1000000));
+    private Color color = new Color((int)(Math.random() * 0x1000000));
+
 
     @Override
     public java.util.List<FigureHandle> getHandles() {
@@ -76,8 +78,9 @@ public class Rect extends AbstractRectangularFigure{
     }
 
     @Override
-    public Figure clone() {
-        Rectangle rectangle = getBounds();
-        return new Rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    public Rect clone() {
+        Rect rectCopy = (Rect) super.clone();
+        rectCopy.color = new Color(color.getRGB());
+        return rectCopy;
     }
 }

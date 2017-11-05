@@ -71,10 +71,4 @@ public class Image extends AbstractRectangularFigure{
         g.setColor(Color.BLACK);
         g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
-
-    @Override
-    public Figure clone() {
-        Rectangle rectangle = getBounds();
-        return new Image(rectangle.x, rectangle.y, rectangle.width, rectangle.height, "");
-    }
 }

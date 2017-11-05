@@ -79,12 +79,15 @@ public class Group extends AbstractFigure implements FigureGroup {
     }
 
     @Override
-    public Figure clone() {
-        return new Group(parts);
+    public Iterable<Figure> getFigureParts() {
+        return Collections.unmodifiableList(parts);
     }
 
     @Override
-    public Iterable<Figure> getFigureParts() {
-        return Collections.unmodifiableList(parts);
+    public Group clone() {
+        Group groupCopy = (Group) super.clone();
+        groupCopy.parts = new LinkedList<>();
+        this.parts.forEach(f -> groupCopy.parts.add(f.clone()));
+        return groupCopy;
     }
 }

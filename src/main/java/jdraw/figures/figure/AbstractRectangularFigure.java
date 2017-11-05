@@ -8,7 +8,8 @@ import java.util.List;
 
 public abstract class AbstractRectangularFigure extends AbstractFigure {
 
-    private final Rectangle rectangle;
+//    private final Rectangle rectangle;
+    private Rectangle rectangle;
 
     protected AbstractRectangularFigure(Point p, int w, int h) {
         rectangle = new Rectangle(p.x, p.y, w, h);
@@ -39,5 +40,12 @@ public abstract class AbstractRectangularFigure extends AbstractFigure {
             rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
             notifyObservers(new FigureEvent(this));
         }
+    }
+
+    @Override
+    public AbstractRectangularFigure clone() {
+        AbstractRectangularFigure abstractRectangularFigureCopy = (AbstractRectangularFigure) super.clone();
+        abstractRectangularFigureCopy.rectangle = (Rectangle) abstractRectangularFigureCopy.rectangle.clone();
+        return abstractRectangularFigureCopy;
     }
 }

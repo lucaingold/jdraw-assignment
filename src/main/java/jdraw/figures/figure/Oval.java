@@ -7,6 +7,7 @@ import jdraw.framework.FigureHandle;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.util.LinkedList;
 
 public class Oval extends AbstractRectangularFigure {
@@ -44,8 +45,7 @@ public class Oval extends AbstractRectangularFigure {
     }
 
     @Override
-    public Figure clone() {
-        Rectangle circle = getBounds();
-        return new Oval((int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight());
+    public Oval clone() {
+        return (Oval) super.clone();
     }
 }

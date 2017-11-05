@@ -11,7 +11,8 @@ import java.util.List;
 
 public abstract class AbstractFigure implements Figure {
 
-    private final List<FigureListener> listeners = new LinkedList<>();
+//    private final List<FigureListener> listeners = new LinkedList<>();
+    private List<FigureListener> listeners = new LinkedList<>();
 
     @Override
     public void addFigureListener(FigureListener listener) {
@@ -30,7 +31,17 @@ public abstract class AbstractFigure implements Figure {
         });
     }
 
-    public abstract Figure clone();
+    @Override
+    public Figure clone(){
+        try {
+            AbstractFigure abstractFigureCopy = (AbstractFigure) super.clone();
+            abstractFigureCopy.listeners = new LinkedList<>();
+            abstractFigureCopy.handles = null;
+            return abstractFigureCopy;
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError();
+        }
+    }
 
     //###### Handles State Pattern #####
 

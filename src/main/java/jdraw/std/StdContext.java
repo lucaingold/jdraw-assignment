@@ -52,6 +52,13 @@ public class StdContext extends AbstractContext {
         super(view, toolFactories);
     }
 
+
+    /**
+     * Saves current clipboard in own data structure
+     */
+    private ClipBoard clipboard = new ClipBoard();
+
+
     /**
      * Creates and initializes the "Edit" menu.
      *
@@ -95,9 +102,41 @@ public class StdContext extends AbstractContext {
         );
 
         editMenu.addSeparator();
-        editMenu.add("Cut").setEnabled(false);
-        editMenu.add("Copy").setEnabled(false);
-        editMenu.add("Paste").setEnabled(false);
+
+
+        JMenuItem cut = new JMenuItem("Cut ˆX");
+        cut.addActionListener(e -> {
+            List<Figure> selection = getView().getSelection();
+            clipboard.setSelection(selection);
+            selection.forEach(f -> getModel().removeFigure(f));
+        });
+        cut.setAccelerator(KeyStroke.getKeyStroke("control X"));
+        editMenu.add(cut).setEnabled(true);
+
+
+        JMenuItem copy = new JMenuItem("Copy ˆC");
+        copy.addActionListener(e -> {
+            List<Figure> selection = new LinkedList<>();
+            getView().getSelection().forEach(f -> selection.add(f.clone()));
+            clipboard.setSelection(selection);
+
+        });
+        copy.setAccelerator(KeyStroke.getKeyStroke("control C"));
+        editMenu.add(copy).setEnabled(true);
+
+        JMenuItem paste = new JMenuItem("Paste ˆV");
+        paste.addActionListener(e -> {
+            if(!clipboard.isEmpty()) {
+                List<Figure> selection = clipboard.getSelection();
+                selection.forEach(f -> {
+                    getModel().addFigure(f);
+                    getView().addToSelection(f);
+                });
+//                clipboard.reset();
+            }
+        });
+        paste.setAccelerator(KeyStroke.getKeyStroke("control V"));
+        editMenu.add(paste).setEnabled(true);
 
         editMenu.addSeparator();
         JMenuItem clear = new JMenuItem("Clear");
@@ -339,4 +378,24 @@ public class StdContext extends AbstractContext {
         }
     }
 
+    private class ClipBoard{
+        private List<Figure> selection;
+
+        protected List<Figure> getSelection() {
+            return selection;
+        }
+
+        protected void setSelection(List<Figure> selection) {
+            this.selection = selection;
+        }
+
+        protected void reset(){
+            this.selection.clear();
+        }
+
+        protected boolean isEmpty(){
+            return selection.isEmpty();
+        }
+    }
 }
+

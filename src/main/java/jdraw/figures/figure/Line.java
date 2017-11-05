@@ -13,7 +13,8 @@ import java.util.LinkedList;
 
 public class Line extends AbstractFigure {
 
-    private final Line2D line;
+    private Line2D line;
+//    private final Line2D line;
 
     public Line(double p1X, double p1Y, double p2X, double p2Y) {
         line = new Line2D.Double(p1X, p1Y, p2X, p2Y);
@@ -61,8 +62,9 @@ public class Line extends AbstractFigure {
     public void setBounds(Point origin, Point corner) {
         Line2D orig = (Line2D) line.clone();
         line.setLine(origin, corner);
-        if (!orig.equals(line)){
-            notifyObservers(new FigureEvent(this));}
+        if (!orig.equals(line)) {
+            notifyObservers(new FigureEvent(this));
+        }
     }
 
     @Override
@@ -71,7 +73,9 @@ public class Line extends AbstractFigure {
     }
 
     @Override
-    public Figure clone() {
-        return new Line(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+    public Line clone() {
+        Line copy = (Line) super.clone();
+        copy.line = (Line2D) copy.line.clone();
+        return copy;
     }
 }
