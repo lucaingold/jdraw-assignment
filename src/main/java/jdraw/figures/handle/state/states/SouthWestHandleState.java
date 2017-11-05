@@ -18,12 +18,12 @@ public class SouthWestHandleState extends AbstractHandleState {
     }
 
     @Override
-    public AbstractHandleState getHorizontalFlipState() {
+    public AbstractHandleState getHorizontalOppositeState() {
         return new SouthEastHandleState(owner);
     }
 
     @Override
-    public AbstractHandleState getVerticalFlipState() {
+    public AbstractHandleState getVerticalOppositeState() {
         return new NorthWestHandleState(owner);
     }
 

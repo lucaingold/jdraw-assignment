@@ -11,6 +11,7 @@ public class Handle implements FigureHandle {
 
     private static final int HANDLE_SIZE = 6;
 
+    //** State Pattern **
     private HandleState state;
 
     public Handle(HandleState state ) {
@@ -21,7 +22,7 @@ public class Handle implements FigureHandle {
         state = s;
     }
 
-
+    //** FigureHandler **
     @Override
     public Figure getOwner() {
         return state.getOwner();
@@ -33,17 +34,17 @@ public class Handle implements FigureHandle {
     }
 
     @Override
+    public Cursor getCursor() {
+        return state.getCursor();
+    }
+
+    @Override
     public void draw(Graphics g) {
         Point loc = getLocation();
         g.setColor(state.getColor());
         g.fillOval(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
         g.setColor(Color.BLACK);
         g.drawOval(loc.x - HANDLE_SIZE / 2, loc.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE);
-    }
-
-    @Override
-    public Cursor getCursor() {
-        return state.getCursor();
     }
 
     @Override
@@ -68,14 +69,19 @@ public class Handle implements FigureHandle {
         state.stopInteraction(x, y);
     }
 
+    //** Switch Handles **
     public void flipHandleHorizontal() {
-        state = state.getHorizontalFlipState();
+        state = state.getHorizontalOppositeState();
+        System.out.println("SSS@@@@@@@@");
+        System.out.println(state.getOwner());
         state.setOwner(state.getOwner());
+        System.out.println(state.getOwner());
+        System.out.println("EEE@@@@@@@@");
         state.startInteraction();
     }
 
     public void flipHandleVertical() {
-        state = state.getVerticalFlipState();
+        state = state.getVerticalOppositeState();
         state.setOwner(state.getOwner());
         state.startInteraction();
     }

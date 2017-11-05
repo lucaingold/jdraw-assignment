@@ -26,7 +26,7 @@ public interface HandleState {
 
     void dragInteraction(int x, int y, MouseEvent e, DrawView v);
 
-    HandleState getHorizontalFlipState();
+    HandleState getHorizontalOppositeState();
 
-    HandleState getVerticalFlipState();
+    HandleState getVerticalOppositeState();
 }

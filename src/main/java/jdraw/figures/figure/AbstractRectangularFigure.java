@@ -4,6 +4,7 @@ import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 
 import java.awt.*;
+import java.util.List;
 
 public abstract class AbstractRectangularFigure extends AbstractFigure {
 
@@ -29,7 +30,7 @@ public abstract class AbstractRectangularFigure extends AbstractFigure {
 
     @Override
     public boolean contains(int x, int y) {
-        return rectangle.contains(x, y);
+        return getBounds().contains(x, y);
     }
 
     @Override

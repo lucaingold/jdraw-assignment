@@ -14,267 +14,329 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import jdraw.figures.figure.Group;
+import jdraw.figures.tool.ImageTool;
 import jdraw.figures.tool.LineTool;
 import jdraw.figures.tool.OvalTool;
 import jdraw.figures.tool.RectTool;
-import jdraw.framework.DrawCommandHandler;
-import jdraw.framework.DrawModel;
-import jdraw.framework.DrawTool;
-import jdraw.framework.DrawToolFactory;
-import jdraw.framework.DrawView;
-import jdraw.framework.Figure;
+import jdraw.framework.*;
+import jdraw.grids.FixedGrid;
+import jdraw.grids.SimpleGrid;
+import jdraw.grids.SnapGrid;
 
 /**
  * Standard implementation of interface DrawContext.
- * 
- * @see DrawView
+ *
  * @author Dominik Gruntz & Christoph Denzler
  * @version 2.6, 24.09.09
+ * @see DrawView
  */
 public class StdContext extends AbstractContext {
 
-	/**
-	 * Constructs a standard context with a default set of drawing tools.
-	 * @param view the view that is displaying the actual drawing.
-	 */
-  public StdContext(DrawView view) {
-		super(view, null);
-	}
-	
-  /**
-   * Constructs a standard context. The drawing tools available can be parameterized using <code>toolFactories</code>.
-   * @param view the view that is displaying the actual drawing.
-   * @param toolFactories a list of DrawToolFactories that are available to the user
-   */
-	public StdContext(DrawView view, List<DrawToolFactory> toolFactories) {
-		super(view, toolFactories);
-	}
+    /**
+     * Constructs a standard context with a default set of drawing tools.
+     *
+     * @param view the view that is displaying the actual drawing.
+     */
+    public StdContext(DrawView view) {
+        super(view, null);
+    }
 
-	/**
-	 * Creates and initializes the "Edit" menu.
-	 * 
-	 * @return the new "Edit" menu.
-	 */
-	@Override
-	protected JMenu createEditMenu() {
-		JMenu editMenu = new JMenu("Edit");
-		final JMenuItem undo = new JMenuItem("Undo");
-		undo.setAccelerator(KeyStroke.getKeyStroke("control Z"));
-		editMenu.add(undo);
-		undo.addActionListener(e -> {
-				final DrawCommandHandler h = getModel().getDrawCommandHandler();
-				if (h.undoPossible()) {
-					h.undo();
-				}
-			}
-		);
+    /**
+     * Constructs a standard context. The drawing tools available can be parameterized using <code>toolFactories</code>.
+     *
+     * @param view          the view that is displaying the actual drawing.
+     * @param toolFactories a list of DrawToolFactories that are available to the user
+     */
+    public StdContext(DrawView view, List<DrawToolFactory> toolFactories) {
+        super(view, toolFactories);
+    }
 
-		final JMenuItem redo = new JMenuItem("Redo");
-		redo.setAccelerator(KeyStroke.getKeyStroke("control Y"));
-		editMenu.add(redo);
-		redo.addActionListener(e -> {
-				final DrawCommandHandler h = getModel().getDrawCommandHandler();
-				if (h.redoPossible()) {
-					h.redo();
-				}
-			}
-		);
-		editMenu.addSeparator();
+    /**
+     * Creates and initializes the "Edit" menu.
+     *
+     * @return the new "Edit" menu.
+     */
+    @Override
+    protected JMenu createEditMenu() {
+        JMenu editMenu = new JMenu("Edit");
+        final JMenuItem undo = new JMenuItem("Undo");
+        undo.setAccelerator(KeyStroke.getKeyStroke("control Z"));
+        editMenu.add(undo);
+        undo.addActionListener(e -> {
+                    final DrawCommandHandler h = getModel().getDrawCommandHandler();
+                    if (h.undoPossible()) {
+                        h.undo();
+                    }
+                }
+        );
 
-		JMenuItem sa = new JMenuItem("SelectAll");
-		sa.setAccelerator(KeyStroke.getKeyStroke("control A"));
-		editMenu.add(sa);
-		sa.addActionListener( e -> {
-				for (Figure f : getModel().getFigures()) {
-					getView().addToSelection(f);
-				}
-				getView().repaint();
-			}
-		);
+        final JMenuItem redo = new JMenuItem("Redo");
+        redo.setAccelerator(KeyStroke.getKeyStroke("control Y"));
+        editMenu.add(redo);
+        redo.addActionListener(e -> {
+                    final DrawCommandHandler h = getModel().getDrawCommandHandler();
+                    if (h.redoPossible()) {
+                        h.redo();
+                    }
+                }
+        );
+        editMenu.addSeparator();
 
-		editMenu.addSeparator();
-		editMenu.add("Cut").setEnabled(false);
-		editMenu.add("Copy").setEnabled(false);
-		editMenu.add("Paste").setEnabled(false);
+        JMenuItem sa = new JMenuItem("SelectAll");
+        sa.setAccelerator(KeyStroke.getKeyStroke("control A"));
+        editMenu.add(sa);
+        sa.addActionListener(e -> {
+                    for (Figure f : getModel().getFigures()) {
+                        getView().addToSelection(f);
+                    }
+                    getView().repaint();
+                }
+        );
 
-		editMenu.addSeparator();
-		JMenuItem clear = new JMenuItem("Clear");
-		editMenu.add(clear);
-		clear.addActionListener(e -> {
-			getModel().removeAllFigures();
-		});
-		
-		editMenu.addSeparator();
-		JMenuItem group = new JMenuItem("Group");
-		group.setEnabled(false);
-		editMenu.add(group);
+        editMenu.addSeparator();
+        editMenu.add("Cut").setEnabled(false);
+        editMenu.add("Copy").setEnabled(false);
+        editMenu.add("Paste").setEnabled(false);
 
-		JMenuItem ungroup = new JMenuItem("Ungroup");
-		ungroup.setEnabled(false);
-		editMenu.add(ungroup);
+        editMenu.addSeparator();
+        JMenuItem clear = new JMenuItem("Clear");
+        editMenu.add(clear);
+        clear.addActionListener(e -> {
+            getModel().removeAllFigures();
+        });
 
-		editMenu.addSeparator();
+        editMenu.addSeparator();
+        JMenuItem group = new JMenuItem("Group");
+        group.addActionListener(e -> {
+            List<Figure> selection = getView().getSelection();
+            Group g = new Group(selection, getModel());
+            getModel().addFigure(g);
+            selection.forEach(f -> getModel().removeFigure(f));
+            getView().addToSelection(g);
+        });
 
-		JMenu orderMenu = new JMenu("Order...");
-		JMenuItem frontItem = new JMenuItem("Bring To Front");
-		frontItem.addActionListener(e -> {
-			bringToFront(getView().getModel(), getView().getSelection());
-		});
-		orderMenu.add(frontItem);
-		JMenuItem backItem = new JMenuItem("Send To Back");
-		backItem.addActionListener(e -> {
-			sendToBack(getView().getModel(), getView().getSelection());
-		});
-		orderMenu.add(backItem);
-		editMenu.add(orderMenu);
+        group.setEnabled(true);
+        editMenu.add(group);
 
-		JMenu grid = new JMenu("Grid...");
-		grid.add("Grid 1");
-		grid.add("Grid 2");
-		grid.add("Grid 3");
-		editMenu.add(grid);
-		
-		return editMenu;
-	}
+        JMenuItem ungroup = new JMenuItem("Ungroup");
 
-	/**
-	 * Creates and initializes items in the file menu.
-	 * 
-	 * @return the new "File" menu.
-	 */
-	@Override
-	protected JMenu createFileMenu() {
-	  JMenu fileMenu = new JMenu("File");
-		JMenuItem open = new JMenuItem("Open");
-		fileMenu.add(open);
-		open.setAccelerator(KeyStroke.getKeyStroke("control O"));
-		open.addActionListener(e -> doOpen());
+        ungroup.addActionListener(e -> {
+            List<Figure> selection = getView().getSelection();
+            for (Figure f: selection ) {
+                if(f instanceof FigureGroup){
+                    for (Figure member:((FigureGroup) f).getFigureParts()) {
+                        getModel().addFigure(member);
+                        getView().addToSelection(f);
+                    }
+                    getModel().removeFigure(f);
+                }
+            }
+        });
 
-		JMenuItem save = new JMenuItem("Save");
-		save.setAccelerator(KeyStroke.getKeyStroke("control S"));
-		fileMenu.add(save);
-		save.addActionListener(e ->	doSave());
 
-		JMenuItem exit = new JMenuItem("Exit");
-		fileMenu.add(exit);
-		exit.addActionListener(e -> System.exit(0));
-		
-		return fileMenu;
-	}
 
-	@Override
-	protected void doRegisterDrawTools() {
-		// TODO Add new figure tools here
-		DrawTool rectangleTool = new RectTool(this, "rectangle.png", "Rectangle");
-		DrawTool lineTool = new LineTool(this, "line.png", "Line");
-		DrawTool ovalTool = new OvalTool(this,"oval.png", "Oval");
+        ungroup.setEnabled(true);
+        editMenu.add(ungroup);
 
-		addTool(rectangleTool);
-		addTool(lineTool);
-		addTool(ovalTool);
-	}
+        editMenu.addSeparator();
 
-	/**
-	 * Changes the order of figures and moves the figures in the selection
-	 * to the front, i.e. moves them to the end of the list of figures.
-	 * @param model model in which the order has to be changed
-	 * @param selection selection which is moved to front
-	 */
-	public void bringToFront(DrawModel model, List<Figure> selection) {
-		// the figures in the selection are ordered according to the order in
-		// the model
-		List<Figure> orderedSelection = new LinkedList<Figure>();
-		int pos = 0;
-		for (Figure f : model.getFigures()) {
-			pos++;
-			if (selection.contains(f)) {
-				orderedSelection.add(0, f);
-			}
-		}
-		for (Figure f : orderedSelection) {
-			model.setFigureIndex(f, --pos);
-		}
-	}
+        JMenu orderMenu = new JMenu("Order...");
+        JMenuItem frontItem = new JMenuItem("Bring To Front");
+        frontItem.addActionListener(e -> {
+            bringToFront(getView().getModel(), getView().getSelection());
+        });
+        orderMenu.add(frontItem);
+        JMenuItem backItem = new JMenuItem("Send To Back");
+        backItem.addActionListener(e -> {
+            sendToBack(getView().getModel(), getView().getSelection());
+        });
+        orderMenu.add(backItem);
+        editMenu.add(orderMenu);
 
-	/**
-	 * Changes the order of figures and moves the figures in the selection
-	 * to the back, i.e. moves them to the front of the list of figures.
-	 * @param model model in which the order has to be changed
-	 * @param selection selection which is moved to the back
-	 */
-	public void sendToBack(DrawModel model, List<Figure> selection) {
-		// the figures in the selection are ordered according to the order in
-		// the model
-		List<Figure> orderedSelection = new LinkedList<Figure>();
-		for (Figure f : model.getFigures()) {
-			if (selection.contains(f)) {
-				orderedSelection.add(f);
-			}
-		}
-		int pos = 0;
-		for (Figure f : orderedSelection) {
-			model.setFigureIndex(f, pos++);
-		}
-	}
+        JMenu grid = new JMenu("Grid");
 
-	/**
-	 * Handles the saving of a drawing to a file.
-	 */
-	private void doSave() {
-		JFileChooser chooser = new JFileChooser(getClass().getResource("")
-				.getFile());
-		chooser.setDialogTitle("Save Graphic");
-		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		FileFilter filter = new FileFilter() {
-			@Override
-			public String getDescription() {
-				return "JDraw Graphic (*.draw)";
-			}
+        //No Grid
+        JMenuItem noGrid = new JMenuItem("No Grid");
+        noGrid.addActionListener(e -> getView().setConstrainer(null));
+        grid.add(noGrid);
 
-			@Override
-			public boolean accept(File f) {
-				return f.getName().endsWith(".draw");
-			}
-		};
-		chooser.setFileFilter(filter);
-		int res = chooser.showSaveDialog(this);
+        //Simple Grid Menu
+        JMenu simpleGridMenu = new JMenu("Simple Grid");
 
-		if (res == JFileChooser.APPROVE_OPTION) {
-			// save graphic
-			File file = chooser.getSelectedFile();
-			if (chooser.getFileFilter() == filter && !filter.accept(file)) {
-				file = new File(chooser.getCurrentDirectory(), file.getName() + ".draw");
-			}
-			System.out.println("save current graphic to file " + file.getName());
-		}
-	}
+        JMenuItem simpleGrid1 = new JMenuItem("Step 1 Grid");
+        simpleGrid1.addActionListener(e -> getView().setConstrainer(new SimpleGrid(1)));
+        simpleGridMenu.add(simpleGrid1);
 
-	/**
-	 * Handles the opening of a new drawing from a file.
-	 */
-	private void doOpen() {
-		JFileChooser chooser = new JFileChooser(getClass().getResource("")
-				.getFile());
-		chooser.setDialogTitle("Open Graphic");
-		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-		chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
-			@Override
-			public String getDescription() {
-				return "JDraw Graphic (*.draw)";
-			}
+        JMenuItem simpleGrid50 = new JMenuItem("Step 50 Grid");
+        simpleGrid50.addActionListener(e -> getView().setConstrainer(new SimpleGrid(50)));
+        simpleGridMenu.add(simpleGrid50);
 
-			@Override
-			public boolean accept(File f) {
-				return f.isDirectory() || f.getName().endsWith(".draw");
-			}
-		});
-		int res = chooser.showOpenDialog(this);
+        grid.add(simpleGridMenu);
 
-		if (res == JFileChooser.APPROVE_OPTION) {
-			// read jdraw graphic
-			System.out.println("read file "
-					+ chooser.getSelectedFile().getName());
-		}
-	}
+        //Fixed Grid Menu
+        JMenu fixedGridMenu = new JMenu("Fixed Grid");
+
+        JMenuItem fixedGrid30 = new JMenuItem("30x30 Grid");
+        fixedGrid30.addActionListener(e -> getView().setConstrainer(new FixedGrid(30)));
+        fixedGridMenu.add(fixedGrid30);
+
+        JMenuItem fixedGrid50 = new JMenuItem("50x50 Grid");
+        fixedGrid50.addActionListener(e -> getView().setConstrainer(new FixedGrid(50)));
+        fixedGridMenu.add(fixedGrid50);
+
+        grid.add(fixedGridMenu);
+
+        //Snap Grid
+        JMenuItem snapGrid = new JMenuItem("Snap Grid");
+        snapGrid.addActionListener(e -> getView().setConstrainer(new SnapGrid(50, getView())));
+        grid.add(snapGrid);
+
+        editMenu.add(grid);
+
+        return editMenu;
+    }
+
+    /**
+     * Creates and initializes items in the file menu.
+     *
+     * @return the new "File" menu.
+     */
+    @Override
+    protected JMenu createFileMenu() {
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem open = new JMenuItem("Open");
+        fileMenu.add(open);
+        open.setAccelerator(KeyStroke.getKeyStroke("control O"));
+        open.addActionListener(e -> doOpen());
+
+        JMenuItem save = new JMenuItem("Save");
+        save.setAccelerator(KeyStroke.getKeyStroke("control S"));
+        fileMenu.add(save);
+        save.addActionListener(e -> doSave());
+
+        JMenuItem exit = new JMenuItem("Exit");
+        fileMenu.add(exit);
+        exit.addActionListener(e -> System.exit(0));
+
+        return fileMenu;
+    }
+
+    @Override
+    protected void doRegisterDrawTools() {
+        DrawTool rectangleTool = new RectTool(this, "rectangle.png", "Rectangle");
+        DrawTool lineTool = new LineTool(this, "line.png", "Line");
+        DrawTool ovalTool = new OvalTool(this, "oval.png", "Oval");
+        DrawTool imageTool = new ImageTool(this, "image.png", "Image");
+        addTool(rectangleTool);
+        addTool(lineTool);
+        addTool(ovalTool);
+        addTool(imageTool);
+    }
+
+    /**
+     * Changes the order of figures and moves the figures in the selection
+     * to the front, i.e. moves them to the end of the list of figures.
+     *
+     * @param model     model in which the order has to be changed
+     * @param selection selection which is moved to front
+     */
+    public void bringToFront(DrawModel model, List<Figure> selection) {
+        // the figures in the selection are ordered according to the order in
+        // the model
+        List<Figure> orderedSelection = new LinkedList<Figure>();
+        int pos = 0;
+        for (Figure f : model.getFigures()) {
+            pos++;
+            if (selection.contains(f)) {
+                orderedSelection.add(0, f);
+            }
+        }
+        for (Figure f : orderedSelection) {
+            model.setFigureIndex(f, --pos);
+        }
+    }
+
+    /**
+     * Changes the order of figures and moves the figures in the selection
+     * to the back, i.e. moves them to the front of the list of figures.
+     *
+     * @param model     model in which the order has to be changed
+     * @param selection selection which is moved to the back
+     */
+    public void sendToBack(DrawModel model, List<Figure> selection) {
+        // the figures in the selection are ordered according to the order in
+        // the model
+        List<Figure> orderedSelection = new LinkedList<Figure>();
+        for (Figure f : model.getFigures()) {
+            if (selection.contains(f)) {
+                orderedSelection.add(f);
+            }
+        }
+        int pos = 0;
+        for (Figure f : orderedSelection) {
+            model.setFigureIndex(f, pos++);
+        }
+    }
+
+    /**
+     * Handles the saving of a drawing to a file.
+     */
+    private void doSave() {
+        JFileChooser chooser = new JFileChooser(getClass().getResource("")
+                .getFile());
+        chooser.setDialogTitle("Save Graphic");
+        chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        FileFilter filter = new FileFilter() {
+            @Override
+            public String getDescription() {
+                return "JDraw Graphic (*.draw)";
+            }
+
+            @Override
+            public boolean accept(File f) {
+                return f.getName().endsWith(".draw");
+            }
+        };
+        chooser.setFileFilter(filter);
+        int res = chooser.showSaveDialog(this);
+
+        if (res == JFileChooser.APPROVE_OPTION) {
+            // save graphic
+            File file = chooser.getSelectedFile();
+            if (chooser.getFileFilter() == filter && !filter.accept(file)) {
+                file = new File(chooser.getCurrentDirectory(), file.getName() + ".draw");
+            }
+            System.out.println("save current graphic to file " + file.getName());
+        }
+    }
+
+    /**
+     * Handles the opening of a new drawing from a file.
+     */
+    private void doOpen() {
+        JFileChooser chooser = new JFileChooser(getClass().getResource("")
+                .getFile());
+        chooser.setDialogTitle("Open Graphic");
+        chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+            @Override
+            public String getDescription() {
+                return "JDraw Graphic (*.draw)";
+            }
+
+            @Override
+            public boolean accept(File f) {
+                return f.isDirectory() || f.getName().endsWith(".draw");
+            }
+        });
+        int res = chooser.showOpenDialog(this);
+
+        if (res == JFileChooser.APPROVE_OPTION) {
+            // read jdraw graphic
+            System.out.println("read file "
+                    + chooser.getSelectedFile().getName());
+        }
+    }
 
 }

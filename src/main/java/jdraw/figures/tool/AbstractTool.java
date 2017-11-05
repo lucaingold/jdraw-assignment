@@ -19,7 +19,7 @@ public abstract class AbstractTool implements DrawTool {
     /**
      * the image resource path.
      */
-    private static final String IMAGES = "/images/";
+    protected static final String IMAGES = "/images/";
 
     /**
      * the icon for the tool.
