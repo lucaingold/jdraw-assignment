@@ -44,7 +44,6 @@ public class EastHandleState extends AbstractHandleState {
     public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
         Rectangle r = owner.getBounds();
         owner.setBounds(corner, new Point(x,r.y+r.height));
-
         if (x < r.x) {
             owner.flipHandlesHorizontal();
         }

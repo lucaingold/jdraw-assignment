@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import jdraw.decorators.SimpleGreenDecorator;
 import jdraw.figures.figure.Group;
 import jdraw.figures.tool.ImageTool;
 import jdraw.figures.tool.LineTool;
@@ -230,6 +231,37 @@ public class StdContext extends AbstractContext {
         JMenuItem snapGrid = new JMenuItem("Snap Grid");
         snapGrid.addActionListener(e -> getView().setConstrainer(new SnapGrid(50, getView())));
         grid.add(snapGrid);
+
+
+
+        JMenu decoratorMenu = new JMenu("Decorators...");
+        JMenuItem greenDecorator = new JMenuItem("Toggle Green Decorator");
+        decoratorMenu.add(greenDecorator);
+        greenDecorator.addActionListener(e -> {
+                    List<Figure> s = getView().getSelection();
+                    getView().clearSelection();
+                    for (Figure f : s) {
+                        Figure f2 = null;
+                        if (f instanceof SimpleGreenDecorator) {
+                            f2 = ((SimpleGreenDecorator) f).getInner();
+                        } else {
+                            f2 = new SimpleGreenDecorator(f);
+                        }
+                        getModel().removeFigure(f);
+                        getModel().addFigure(f2);
+                        getView().addToSelection(f2);
+                    }
+                }
+        );
+
+
+
+        decoratorMenu.add(backItem);
+        editMenu.add(decoratorMenu);
+
+
+
+
 
         editMenu.add(grid);
 

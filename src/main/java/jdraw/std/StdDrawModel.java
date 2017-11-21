@@ -48,7 +48,6 @@ public class StdDrawModel implements DrawModel, FigureListener {
             f.addFigureListener(this);
             invokeListener(f, DrawModelEvent.Type.FIGURE_ADDED);
         }
-        logger.trace("addFigure");
     }
 
     @Override
@@ -62,13 +61,11 @@ public class StdDrawModel implements DrawModel, FigureListener {
         if (figures.remove(f)) {
             f.removeFigureListener(this);
             invokeListener(f, DrawModelEvent.Type.FIGURE_REMOVED);
-            logger.trace("removeFigure");
         }
     }
 
     @Override
     public void addModelChangeListener(DrawModelListener listener) {
-        logger.trace("addModelChangeListener");
         if (listener != null && !listeners.contains(listener))
             listeners.add(listener);
     }
@@ -111,7 +108,7 @@ public class StdDrawModel implements DrawModel, FigureListener {
     @Override
     public void removeAllFigures() {
         new LinkedList<>(figures).forEach(f -> {
-            removeFigure(f);
+            this.removeFigure(f);
         });
         invokeListener(null, DrawModelEvent.Type.DRAWING_CLEARED);
         logger.trace("removeAllFigures");

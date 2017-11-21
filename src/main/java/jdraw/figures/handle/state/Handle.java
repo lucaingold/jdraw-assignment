@@ -14,7 +14,7 @@ public class Handle implements FigureHandle {
     //** State Pattern **
     private HandleState state;
 
-    public Handle(HandleState state ) {
+    public Handle(HandleState state) {
         this.state = state;
     }
 
@@ -72,11 +72,9 @@ public class Handle implements FigureHandle {
     //** Switch Handles **
     public void flipHandleHorizontal() {
         state = state.getHorizontalOppositeState();
-        System.out.println("SSS@@@@@@@@");
         System.out.println(state.getOwner());
         state.setOwner(state.getOwner());
         System.out.println(state.getOwner());
-        System.out.println("EEE@@@@@@@@");
         state.startInteraction();
     }
 

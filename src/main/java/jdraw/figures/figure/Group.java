@@ -19,7 +19,7 @@ public class Group extends AbstractFigure implements FigureGroup {
 
     public Group(List<Figure> figures, DrawModel model) {
         if (parts != null && parts.size() > 0) {
-            this.parts = new ArrayList<Figure>(parts);
+            this.parts = new ArrayList<>(parts);
             for (Figure f : model.getFigures()) {
                 if (figures.contains(f)) {
                     parts.add(f);
