@@ -2,6 +2,7 @@ package jdraw.figures.handle.state.states;
 
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;
+import jdraw.framework.Figure;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -9,11 +10,11 @@ import java.awt.event.MouseEvent;
 public class SouthWestHandleState extends AbstractHandleState {
 
 
-    public SouthWestHandleState(AbstractFigure figure) {
+    public SouthWestHandleState(Figure figure) {
         super(figure, Cursor.SW_RESIZE_CURSOR);
     }
 
-    public SouthWestHandleState(AbstractFigure figure, Color color) {
+    public SouthWestHandleState(Figure figure, Color color) {
         super(figure, Cursor.SW_RESIZE_CURSOR, color);
     }
 
@@ -49,10 +50,10 @@ public class SouthWestHandleState extends AbstractHandleState {
         owner.setBounds(corner, new Point(x,y));
 
         if (x > r.x + r.width) {
-            owner.flipHandlesHorizontal();
+            getAbstractInstance(owner).flipHandlesHorizontal();
         }
         if (y < r.y) {
-            owner.flipHandlesVertical();
+            getAbstractInstance(owner).flipHandlesVertical();
         }
     }
 

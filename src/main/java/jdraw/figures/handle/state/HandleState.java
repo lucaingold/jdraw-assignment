@@ -2,15 +2,16 @@ package jdraw.figures.handle.state;
 
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;
+import jdraw.framework.Figure;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public interface HandleState {
 
-    AbstractFigure getOwner();
+    Figure getOwner();
 
-    void setOwner(AbstractFigure f);
+    void setOwner(Figure f);
 
     Color getColor();
 

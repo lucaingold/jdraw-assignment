@@ -70,5 +70,13 @@ public abstract class AbstractFigure implements Figure {
         return type.cast(this); // checked version of (T)this
     }
 
+    private Figure parent;
+
+    @Override
+    public final Figure getParent() { return parent; }
+
+    @Override
+    public void setParent(Figure parent) { this.parent = parent; }
+
 
 }

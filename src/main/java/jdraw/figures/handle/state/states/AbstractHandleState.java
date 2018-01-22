@@ -1,24 +1,26 @@
 package jdraw.figures.handle.state.states;
 
+import jdraw.decorators.AbstractDecorator;
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.figures.handle.state.HandleState;
+import jdraw.framework.Figure;
 
 import java.awt.*;
 
 public abstract class AbstractHandleState implements HandleState {
 
-    protected AbstractFigure owner;
+    protected Figure owner;
     protected Point corner;
     private final int resizeCursor;
     private Color color;
 
-    protected AbstractHandleState(AbstractFigure figure, int resizeCursor) {
+    protected AbstractHandleState(Figure figure, int resizeCursor) {
         this.color = Color.WHITE;
         this.owner = figure;
         this.resizeCursor = resizeCursor;
     }
 
-    protected AbstractHandleState(AbstractFigure figure, int resizeCursor, Color color) {
+    protected AbstractHandleState(Figure figure, int resizeCursor, Color color) {
         this(figure,resizeCursor);
         this.color = color;
     }
@@ -41,13 +43,16 @@ public abstract class AbstractHandleState implements HandleState {
     }
 
     @Override
-    public void setOwner(AbstractFigure owner) {
+    public void setOwner(Figure owner) {
         this.owner = owner;
     }
 
     @Override
-    public AbstractFigure getOwner() {
-        return owner;
+    public Figure getOwner() {
+        if(owner.getParent()!=null){
+            return (Figure) owner.getParent();
+        }
+        return (Figure) owner;
     }
 
     @Override
@@ -59,4 +64,13 @@ public abstract class AbstractHandleState implements HandleState {
     public void stopInteraction(int x, int y) {
         corner = null;
     }
+
+    protected AbstractFigure getAbstractInstance(Figure owner2) throws IllegalArgumentException{
+        if(owner2.isInstanceOf(AbstractFigure.class))
+            return (AbstractFigure) owner2;
+        if(owner2.isInstanceOf(AbstractDecorator.class))
+            return this.getAbstractInstance(((AbstractDecorator)owner2).getInner());
+        throw new IllegalArgumentException();
+    }
+
 }

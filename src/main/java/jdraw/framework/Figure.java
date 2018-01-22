@@ -113,4 +113,8 @@ public interface Figure extends Serializable, Cloneable {
 	boolean isInstanceOf(Class<?> type);
 
 	<T> T getInstanceOf(Class<T> type);
+
+    public Figure getParent();
+
+    public void setParent(Figure parent);
 }

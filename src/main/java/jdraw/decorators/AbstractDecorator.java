@@ -13,6 +13,7 @@ public class AbstractDecorator implements Figure {
 
     public AbstractDecorator(Figure inner) {
         this.inner = inner;
+        inner.setParent(this);
     }
 
     public Figure getInner() {
@@ -78,5 +79,12 @@ public class AbstractDecorator implements Figure {
     public final boolean isInstanceOf(Class<?> type) {
         return type.isAssignableFrom(this.getClass()) || inner.isInstanceOf(type);
     }
+
+    private Figure parent;
+
+    public final Figure getParent() { return parent; }
+
+    @Override
+    public void setParent(Figure parent) { this.parent = parent; }
 
 }

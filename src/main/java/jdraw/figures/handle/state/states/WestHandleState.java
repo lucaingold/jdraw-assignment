@@ -2,17 +2,18 @@ package jdraw.figures.handle.state.states;
 
 import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;
+import jdraw.framework.Figure;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class WestHandleState extends AbstractHandleState {
 
-    public WestHandleState(AbstractFigure figure) {
+    public WestHandleState(Figure figure) {
         super(figure, Cursor.W_RESIZE_CURSOR);
     }
 
-    public WestHandleState(AbstractFigure figure, Color color) {
+    public WestHandleState(Figure figure, Color color) {
         super(figure, Cursor.W_RESIZE_CURSOR, color);
     }
 
@@ -49,7 +50,7 @@ public class WestHandleState extends AbstractHandleState {
         owner.setBounds(new Point(x,r.y), corner);
 
         if (x > r.x + r.width) {
-            owner.flipHandlesHorizontal();
+            getAbstractInstance(owner).flipHandlesHorizontal();
         }
 
     }

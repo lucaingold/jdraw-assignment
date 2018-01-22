@@ -213,6 +213,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 			Iterator<FigureHandle> it = handles.iterator();
 			while (it.hasNext()) {
 				FigureHandle h = it.next();
+				//Decorator-Problem: h = instanceOf Figure, f = instanceOf Decorator
 				if (h.getOwner() == f) {
 					it.remove();
 				}
