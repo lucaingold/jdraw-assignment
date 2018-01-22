@@ -18,7 +18,7 @@ public class Group extends AbstractFigure implements FigureGroup {
     private Rectangle bounds = new Rectangle();
 
     public Group(List<Figure> figures, DrawModel model) {
-        if (parts != null && parts.size() > 0) {
+        if (parts != null && figures.size() > 0) {
             this.parts = new ArrayList<>(parts);
             for (Figure f : model.getFigures()) {
                 if (figures.contains(f)) {
@@ -30,7 +30,7 @@ public class Group extends AbstractFigure implements FigureGroup {
     }
 
     private Group(List<Figure> figures) {
-        if (parts != null && parts.size() > 0)
+        if (parts != null && figures.size() > 0)
             this.parts = new ArrayList<Figure>(parts);
         else throw new IllegalArgumentException();
     }

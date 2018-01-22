@@ -107,4 +107,10 @@ public interface Figure extends Serializable, Cloneable {
 	 * @return clone of figure
 	 */
 	Figure clone();
+
+	//###Decorator-Helper-Methods
+
+	boolean isInstanceOf(Class<?> type);
+
+	<T> T getInstanceOf(Class<T> type);
 }

@@ -59,5 +59,16 @@ public abstract class AbstractFigure implements Figure {
         }
     }
 
+    //Decorator-Helper
+    @Override
+    public boolean isInstanceOf(Class<?> type) {
+        return type.isAssignableFrom(this.getClass());
+    }
+
+    @Override
+    public <T> T getInstanceOf(Class<T> type) {
+        return type.cast(this); // checked version of (T)this
+    }
+
 
 }

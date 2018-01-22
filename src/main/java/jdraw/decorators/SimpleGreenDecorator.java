@@ -1,5 +1,6 @@
 package jdraw.decorators;
 
+import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 import jdraw.framework.FigureListener;
@@ -9,7 +10,7 @@ import java.awt.image.ImageObserver;
 import java.text.AttributedCharacterIterator;
 import java.util.List;
 
-public class SimpleGreenDecorator implements Figure {
+public class SimpleGreenDecorator extends AbstractDecorator {
 
     static class GraphicsDecorator extends Graphics {
         private final Graphics inner;
@@ -273,58 +274,11 @@ public class SimpleGreenDecorator implements Figure {
         }
     }
 
-    private final Figure inner;
-
     public SimpleGreenDecorator(Figure inner) {
-        this.inner = inner;
+        super(inner);
     }
-
-    public Figure getInner() {
-        return inner;
-    }
-
     @Override
     public void draw(Graphics g) {
-        inner.draw(new GraphicsDecorator(g));
-    }
-
-    @Override
-    public void move(int dx, int dy) {
-        inner.move(dx, dy);
-    }
-
-    @Override
-    public boolean contains(int x, int y) {
-        return inner.contains(x, y);
-    }
-
-    @Override
-    public void setBounds(Point origin, Point corner) {
-        inner.setBounds(origin, corner);
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        return inner.getBounds();
-    }
-
-    @Override
-    public List<FigureHandle> getHandles() {
-        return inner.getHandles();
-    }
-
-    @Override
-    public void addFigureListener(FigureListener listener) {
-        inner.addFigureListener(listener);
-    }
-
-    @Override
-    public void removeFigureListener(FigureListener listener) {
-        inner.removeFigureListener(listener);
-    }
-
-    @Override
-    public Figure clone() {
-        return inner.clone();
+        super.draw(new GraphicsDecorator(g));
     }
 }

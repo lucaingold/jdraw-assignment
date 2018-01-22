@@ -164,8 +164,10 @@ public class StdContext extends AbstractContext {
         ungroup.addActionListener(e -> {
             List<Figure> selection = getView().getSelection();
             for (Figure f: selection ) {
-                if(f instanceof FigureGroup){
-                    for (Figure member:((FigureGroup) f).getFigureParts()) {
+//                if(f instanceof FigureGroup){
+                if(f.isInstanceOf(FigureGroup.class)){
+                    for (Figure member: f.getInstanceOf(FigureGroup.class).getFigureParts()) {
+//                   for (Figure member:((FigureGroup) f).getFigureParts()) {
                         getModel().addFigure(member);
                         getView().addToSelection(f);
                     }
