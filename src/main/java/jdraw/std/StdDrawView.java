@@ -22,6 +22,8 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import jdraw.commands.MoveCommand;
+import jdraw.commands.RemoveFigureCommand;
 import jdraw.framework.DrawContext;
 import jdraw.framework.DrawModel;
 import jdraw.framework.DrawModelEvent;
@@ -301,7 +303,7 @@ public final class StdDrawView extends JComponent implements DrawView {
 			if (code == KeyEvent.VK_DELETE || code == KeyEvent.VK_BACK_SPACE) {
 				model.getDrawCommandHandler().beginScript();
 				for (Figure f : getSelection()) {
-					model.getDrawCommandHandler().addCommand(new RemoveFigureCommand(model, f));
+//					model.getDrawCommandHandler().addCommand(new RemoveFigureCommand(model, f));
 					model.removeFigure(f);
 					// as a consequence, the figure is also removed from the selection
 				}

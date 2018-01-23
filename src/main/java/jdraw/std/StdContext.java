@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import jdraw.commands.GroupFigureCommand;
 import jdraw.decorators.BorderDecorator;
 import jdraw.decorators.BundleDecorator;
 import jdraw.decorators.LogDecorator;
@@ -157,6 +158,8 @@ public class StdContext extends AbstractContext {
             getModel().addFigure(g);
             selection.forEach(f -> getModel().removeFigure(f));
             getView().addToSelection(g);
+            //GroupCommand
+            this.getModel().getDrawCommandHandler().addCommand(new GroupFigureCommand(this.getModel(), g, true));
         });
 
         group.setEnabled(true);
@@ -169,6 +172,8 @@ public class StdContext extends AbstractContext {
             for (Figure f: selection ) {
 //                if(f instanceof FigureGroup){
                 if(f.isInstanceOf(FigureGroup.class)){
+                    //GroupCommand
+                    this.getModel().getDrawCommandHandler().addCommand(new GroupFigureCommand(this.getModel(), (FigureGroup) f, false));
                     for (Figure member: f.getInstanceOf(FigureGroup.class).getFigureParts()) {
 //                   for (Figure member:((FigureGroup) f).getFigureParts()) {
                         getModel().addFigure(member);
