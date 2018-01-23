@@ -7,6 +7,9 @@ package jdraw.std;
 
 import java.util.*;
 
+import jdraw.commands.AddFigureCommand;
+import jdraw.commands.MyDrawCommandHandler;
+import jdraw.commands.RemoveFigureCommand;
 import jdraw.framework.*;
 import org.apache.log4j.Logger;
 
@@ -44,11 +47,11 @@ public class StdDrawModel implements DrawModel, FigureListener {
     @Override
     public void addFigure(Figure f) {
         if (f != null && !figures.contains(f)) {
+            this.getDrawCommandHandler().addCommand(new AddFigureCommand(this, f));
             figures.add(f);
             f.addFigureListener(this);
             invokeListener(f, DrawModelEvent.Type.FIGURE_ADDED);
         }
-        logger.trace("addFigure");
     }
 
     @Override
@@ -59,16 +62,15 @@ public class StdDrawModel implements DrawModel, FigureListener {
 
     @Override
     public void removeFigure(Figure f) {
+        this.getDrawCommandHandler().addCommand(new RemoveFigureCommand(this, f));
         if (figures.remove(f)) {
             f.removeFigureListener(this);
             invokeListener(f, DrawModelEvent.Type.FIGURE_REMOVED);
-            logger.trace("removeFigure");
         }
     }
 
     @Override
     public void addModelChangeListener(DrawModelListener listener) {
-        logger.trace("addModelChangeListener");
         if (listener != null && !listeners.contains(listener))
             listeners.add(listener);
     }
@@ -83,7 +85,8 @@ public class StdDrawModel implements DrawModel, FigureListener {
      * The draw command handler. Initialized here with a dummy implementation.
      */
     // TODO initialize with your implementation of the undo/redo-assignment.
-    private DrawCommandHandler handler = new EmptyDrawCommandHandler();
+//    private DrawCommandHandler handler = new EmptyDrawCommandHandler();
+    private DrawCommandHandler handler = new MyDrawCommandHandler();
 
     /**
      * Retrieve the draw command handler in use.
@@ -111,7 +114,7 @@ public class StdDrawModel implements DrawModel, FigureListener {
     @Override
     public void removeAllFigures() {
         new LinkedList<>(figures).forEach(f -> {
-            removeFigure(f);
+            this.removeFigure(f);
         });
         invokeListener(null, DrawModelEvent.Type.DRAWING_CLEARED);
         logger.trace("removeAllFigures");

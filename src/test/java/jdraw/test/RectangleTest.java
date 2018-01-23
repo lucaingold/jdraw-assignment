@@ -5,17 +5,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 
+import jdraw.figures.figure.AbstractFigure;
 import org.junit.Before;
 import org.junit.Test;
 
-import jdraw.figures.Rect;
+import jdraw.figures.figure.Rect;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureListener;
 
 public class RectangleTest {
 
-	private Rect f;
+	private AbstractFigure f;
 	private int cnt;
 
 	@Before
