@@ -12,4 +12,4 @@
 - Assignment 10: UndoRedo
 - Assignment 11: Configuration
 
-Each Branch is an Assignment, Master = finished project
+Each branch is an assignment, master = finished project
