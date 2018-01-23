@@ -1,5 +1,6 @@
 package jdraw.figures.handle.state;
 
+import jdraw.figures.figure.AbstractFigure;
 import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
@@ -73,14 +74,14 @@ public class Handle implements FigureHandle {
     public void flipHandleHorizontal() {
         state = state.getHorizontalOppositeState();
         System.out.println(state.getOwner());
-        state.setOwner(state.getOwner());
-        System.out.println(state.getOwner());
+        state.setOwner((AbstractFigure) state.getOwner());
+        System.out.println((AbstractFigure)state.getOwner());
         state.startInteraction();
     }
 
     public void flipHandleVertical() {
         state = state.getVerticalOppositeState();
-        state.setOwner(state.getOwner());
+        state.setOwner((AbstractFigure)state.getOwner());
         state.startInteraction();
     }
 

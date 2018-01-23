@@ -9,11 +9,11 @@ import java.awt.event.MouseEvent;
 
 public class WestHandleState extends AbstractHandleState {
 
-    public WestHandleState(Figure figure) {
+    public WestHandleState(AbstractFigure figure) {
         super(figure, Cursor.W_RESIZE_CURSOR);
     }
 
-    public WestHandleState(Figure figure, Color color) {
+    public WestHandleState(AbstractFigure figure, Color color) {
         super(figure, Cursor.W_RESIZE_CURSOR, color);
     }
 
@@ -50,7 +50,7 @@ public class WestHandleState extends AbstractHandleState {
         owner.setBounds(new Point(x,r.y), corner);
 
         if (x > r.x + r.width) {
-            getAbstractInstance(owner).flipHandlesHorizontal();
+            owner.flipHandlesHorizontal();
         }
 
     }

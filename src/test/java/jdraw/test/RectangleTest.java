@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 
+import jdraw.figures.figure.AbstractFigure;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,7 +66,7 @@ public class RectangleTest {
 	@Test
 	final public void testCycle() {
 		Figure f1 = f;
-		Figure f2 = new AbstractFigure(10, 10, 10, 10);
+		Figure f2 = new Rect(10, 10, 10, 10);
 		f1.addFigureListener(new UpdateListener(f2));
 		f2.addFigureListener(new UpdateListener(f1));
 		

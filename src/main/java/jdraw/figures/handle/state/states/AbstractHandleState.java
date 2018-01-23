@@ -9,18 +9,18 @@ import java.awt.*;
 
 public abstract class AbstractHandleState implements HandleState {
 
-    protected Figure owner;
+    protected AbstractFigure owner;
     protected Point corner;
     private final int resizeCursor;
     private Color color;
 
-    protected AbstractHandleState(Figure figure, int resizeCursor) {
+    protected AbstractHandleState(AbstractFigure figure, int resizeCursor) {
         this.color = Color.WHITE;
         this.owner = figure;
         this.resizeCursor = resizeCursor;
     }
 
-    protected AbstractHandleState(Figure figure, int resizeCursor, Color color) {
+    protected AbstractHandleState(AbstractFigure figure, int resizeCursor, Color color) {
         this(figure,resizeCursor);
         this.color = color;
     }
@@ -43,15 +43,15 @@ public abstract class AbstractHandleState implements HandleState {
     }
 
     @Override
-    public void setOwner(Figure owner) {
+    public void setOwner(AbstractFigure owner) {
         this.owner = owner;
     }
 
     @Override
     public Figure getOwner() {
-        if(owner.getParent()!=null){
-            return (Figure) owner.getParent();
-        }
+//        if(owner.getParent()!=null){
+//            return (Figure) owner.getParent();
+//        }
         return (Figure) owner;
     }
 
@@ -63,14 +63,6 @@ public abstract class AbstractHandleState implements HandleState {
     @Override
     public void stopInteraction(int x, int y) {
         corner = null;
-    }
-
-    protected AbstractFigure getAbstractInstance(Figure owner2) throws IllegalArgumentException{
-        if(owner2.isInstanceOf(AbstractFigure.class))
-            return (AbstractFigure) owner2;
-        if(owner2.isInstanceOf(AbstractDecorator.class))
-            return this.getAbstractInstance(((AbstractDecorator)owner2).getInner());
-        throw new IllegalArgumentException();
     }
 
 }

@@ -72,11 +72,11 @@ public abstract class AbstractFigure implements Figure {
 
     private Figure parent;
 
-    @Override
-    public final Figure getParent() { return parent; }
-
-    @Override
-    public void setParent(Figure parent) { this.parent = parent; }
+//    @Override
+//    public final Figure getParent() { return parent; }
+//
+//    @Override
+//    public void setParent(Figure parent) { this.parent = parent; }
 
 
 }

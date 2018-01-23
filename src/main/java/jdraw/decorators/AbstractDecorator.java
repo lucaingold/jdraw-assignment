@@ -1,23 +1,39 @@
 package jdraw.decorators;
 
+import jdraw.framework.DrawView;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureHandle;
 import jdraw.framework.FigureListener;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AbstractDecorator implements Figure {
 
-    private final Figure inner;
+    private Figure inner;
 
     public AbstractDecorator(Figure inner) {
         this.inner = inner;
-        inner.setParent(this);
+//        inner.setParent(this);
     }
 
     public Figure getInner() {
         return inner;
+    }
+
+    private List<FigureHandle> handles;
+
+    public List<FigureHandle> getHandles() {
+        //Problem: Handles refer to the wrong owner. As a consequence, the handles are not removed if the figure is removed.
+        List<FigureHandle> handles = new LinkedList<>();
+        for(FigureHandle h: inner.getHandles()) {
+            //This handle-decorator returns the correct owner.
+            handles.add(new HandleDecorator(h));
+        }
+        return Collections.unmodifiableList(handles);
     }
 
     @Override
@@ -45,10 +61,10 @@ public class AbstractDecorator implements Figure {
         return inner.getBounds();
     }
 
-    @Override
-    public List<FigureHandle> getHandles() {
-        return inner.getHandles();
-    }
+//    @Override
+//    public List<FigureHandle> getHandles() {
+//        return inner.getHandles();
+//    }
 
     @Override
     public void addFigureListener(FigureListener listener) {
@@ -62,7 +78,17 @@ public class AbstractDecorator implements Figure {
 
     @Override
     public Figure clone() {
-        return inner.clone();
+
+        try{
+            AbstractDecorator f = (AbstractDecorator) super.clone();
+            f.inner = (Figure) inner.clone();
+            f.handles = null;
+            return f;
+        }
+        catch (CloneNotSupportedException e){
+            throw new InternalError();
+        }
+//        return inner.clone();
     }
 
     //### Decorator Helper-Methods
@@ -80,11 +106,64 @@ public class AbstractDecorator implements Figure {
         return type.isAssignableFrom(this.getClass()) || inner.isInstanceOf(type);
     }
 
-    private Figure parent;
+//    private Figure parent;
+//
+//    @Override
+//    public final Figure getParent() { return parent; }
+//
+//    @Override
+//    public void setParent(Figure parent) { this.parent = parent; }
 
-    public final Figure getParent() { return parent; }
+    private final class HandleDecorator implements FigureHandle
+    {
+        private final FigureHandle inner;
 
-    @Override
-    public void setParent(Figure parent) { this.parent = parent; }
+        public HandleDecorator(FigureHandle handle) {
+            this.inner = handle;
+        }
 
+        //Modified
+        @Override
+        public Figure getOwner() {
+            //Class HandleDecorator is declared as inner class of class AbstractDecorator
+            return AbstractDecorator.this;
+        }
+
+        //The remaining methods are all forwarded to the original figure handle...
+        @Override
+        public boolean contains(int x, int y) {
+            return inner.contains(x, y);
+        }
+
+        @Override
+        public void startInteraction(int x, int y, MouseEvent e, DrawView v) {
+            inner.startInteraction(x,y,e,v);
+        }
+
+        @Override
+        public void dragInteraction(int x, int y, MouseEvent e, DrawView v) {
+            inner.dragInteraction(x,y,e,v);
+        }
+
+        @Override
+        public void stopInteraction(int x, int y, MouseEvent e, DrawView v) {
+            inner.stopInteraction(x,y,e,v);
+        }
+
+        @Override
+        public Point getLocation() {
+            return inner.getLocation();
+        }
+
+        @Override
+        public void draw(Graphics g) {
+            inner.draw(g);
+        }
+
+        @Override
+        public Cursor getCursor() {
+            return inner.getCursor();
+        }
+
+    }
 }

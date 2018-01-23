@@ -11,7 +11,7 @@ public interface HandleState {
 
     Figure getOwner();
 
-    void setOwner(Figure f);
+    void setOwner(AbstractFigure f);
 
     Color getColor();
 

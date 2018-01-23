@@ -14,6 +14,9 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import jdraw.decorators.BorderDecorator;
+import jdraw.decorators.BundleDecorator;
+import jdraw.decorators.LogDecorator;
 import jdraw.decorators.SimpleGreenDecorator;
 import jdraw.figures.figure.Group;
 import jdraw.figures.tool.ImageTool;
@@ -256,14 +259,61 @@ public class StdContext extends AbstractContext {
                 }
         );
 
+        JMenuItem borderDecorator = new JMenuItem("Toggle Border Decorator");
+        decoratorMenu.add(borderDecorator);
+        borderDecorator.addActionListener( e -> {
+            List<Figure> s = getView().getSelection();
+            getView().clearSelection();
+            for (Figure f : s) {
+                BorderDecorator dec = new BorderDecorator(f);
+                getModel().removeFigure(f);
+                getModel().addFigure(dec);
+                getView().addToSelection(dec);
+            }
+        });
+
+        JMenuItem bundleDecorator = new JMenuItem("Toggle Bundle Decorator");
+        decoratorMenu.add(bundleDecorator);
+        bundleDecorator.addActionListener(e -> {
+                    List<Figure> s = getView().getSelection();
+                    getView().clearSelection();
+                    for (Figure f : s) {
+                        Figure f2 = null;
+                        if (f instanceof BundleDecorator) {
+                            f2 = ((BundleDecorator) f).getInner();
+                        } else {
+                            f2 = new BundleDecorator(f);
+                        }
+                        getModel().removeFigure(f);
+                        getModel().addFigure(f2);
+                        getView().addToSelection(f2);
+                    }
+                }
+        );
+
+
+        JMenuItem logDecorator = new JMenuItem("Toggle Log Decorator");
+        decoratorMenu.add(logDecorator);
+        logDecorator.addActionListener(e -> {
+                    List<Figure> s = getView().getSelection();
+                    getView().clearSelection();
+                    for (Figure f : s) {
+                        Figure f2 = null;
+                        if (f instanceof LogDecorator) {
+                            f2 = ((LogDecorator) f).getInner();
+                        } else {
+                            f2 = new LogDecorator(f);
+                        }
+                        getModel().removeFigure(f);
+                        getModel().addFigure(f2);
+                        getView().addToSelection(f2);
+                    }
+                }
+        );
 
 
         decoratorMenu.add(backItem);
         editMenu.add(decoratorMenu);
-
-
-
-
 
         editMenu.add(grid);
 

@@ -10,11 +10,11 @@ import java.awt.event.MouseEvent;
 public class SouthWestHandleState extends AbstractHandleState {
 
 
-    public SouthWestHandleState(Figure figure) {
+    public SouthWestHandleState(AbstractFigure figure) {
         super(figure, Cursor.SW_RESIZE_CURSOR);
     }
 
-    public SouthWestHandleState(Figure figure, Color color) {
+    public SouthWestHandleState(AbstractFigure figure, Color color) {
         super(figure, Cursor.SW_RESIZE_CURSOR, color);
     }
 
@@ -50,10 +50,10 @@ public class SouthWestHandleState extends AbstractHandleState {
         owner.setBounds(corner, new Point(x,y));
 
         if (x > r.x + r.width) {
-            getAbstractInstance(owner).flipHandlesHorizontal();
+            owner.flipHandlesHorizontal();
         }
         if (y < r.y) {
-            getAbstractInstance(owner).flipHandlesVertical();
+            owner.flipHandlesVertical();
         }
     }
 

@@ -277,6 +277,7 @@ public class SimpleGreenDecorator extends AbstractDecorator {
     public SimpleGreenDecorator(Figure inner) {
         super(inner);
     }
+
     @Override
     public void draw(Graphics g) {
         super.draw(new GraphicsDecorator(g));
