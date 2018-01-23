@@ -350,16 +350,24 @@ public class StdContext extends AbstractContext {
         return fileMenu;
     }
 
+// *** Old Version ***
+//    @Override
+//    protected void doRegisterDrawTools() {
+//        DrawTool rectangleTool = new RectTool(this, "rectangle.png", "Rectangle");
+//        DrawTool lineTool = new LineTool(this, "line.png", "Line");
+//        DrawTool ovalTool = new OvalTool(this, "oval.png", "Oval");
+//        DrawTool imageTool = new ImageTool(this, "image.png", "Image");
+//        addTool(rectangleTool);
+//        addTool(lineTool);
+//        addTool(ovalTool);
+//        addTool(imageTool);
+//    }
+
     @Override
     protected void doRegisterDrawTools() {
-        DrawTool rectangleTool = new RectTool(this, "rectangle.png", "Rectangle");
-        DrawTool lineTool = new LineTool(this, "line.png", "Line");
-        DrawTool ovalTool = new OvalTool(this, "oval.png", "Oval");
-        DrawTool imageTool = new ImageTool(this, "image.png", "Image");
-        addTool(rectangleTool);
-        addTool(lineTool);
-        addTool(ovalTool);
-        addTool(imageTool);
+        for (DrawToolFactory dt : getToolFactories()) {
+            addTool(dt == null ? null : dt.createTool(this));
+        }
     }
 
     /**
