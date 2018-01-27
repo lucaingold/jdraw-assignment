@@ -91,3 +91,4 @@ public class Group extends AbstractFigure implements FigureGroup {
         return groupCopy;
     }
 }
+

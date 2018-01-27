@@ -134,7 +134,6 @@ public abstract class AbstractContext extends JFrame implements DrawContext {
 	 */
 	public AbstractContext(DrawView view, List<DrawToolFactory> toolFactories) {
 		super("JDraw Editor");
-
 		this.view = view;
 		this.view.setDrawContext(this);
 		

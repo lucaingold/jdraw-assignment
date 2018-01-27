@@ -32,3 +32,4 @@ public class AnimationDecorator extends AbstractDecorator  implements Runnable{
         }
     }
 }
+

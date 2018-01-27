@@ -40,4 +40,5 @@ public class EmptyDrawCommandHandler implements DrawCommandHandler {
 
 	@Override
 	public void clearHistory() { /* do nothing. */ }
+
 }

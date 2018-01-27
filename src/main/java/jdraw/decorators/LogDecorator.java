@@ -73,5 +73,4 @@ public class LogDecorator extends AbstractDecorator {
         return super.clone();
     }
 
-
 }

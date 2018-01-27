@@ -23,6 +23,7 @@ public class AddFigureCommand implements DrawCommand{
         model.removeFigure(figure);
     }
 
+
     //A new AddFigureCommand is added when a new figure has been created, e.g. in method mouseUp of the draw-tool:
     // context.getModel().getDrawCommandHandler().addCommand(new AddFigureCommand(context.getModel(), figure));
 }

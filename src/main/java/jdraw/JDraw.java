@@ -80,5 +80,4 @@ public final class JDraw {
 		}
 		return (DrawContext) ctx.getBean("drawContext");
 	}
-
 }

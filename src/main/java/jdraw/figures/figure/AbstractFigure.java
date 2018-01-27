@@ -78,5 +78,4 @@ public abstract class AbstractFigure implements Figure {
 //    @Override
 //    public void setParent(Figure parent) { this.parent = parent; }
 
-
 }

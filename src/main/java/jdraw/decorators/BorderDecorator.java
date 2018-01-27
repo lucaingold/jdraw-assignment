@@ -35,3 +35,4 @@ public class BorderDecorator extends AbstractDecorator {
         return getBounds().contains(x, y);
     }
 }
+

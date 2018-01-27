@@ -288,3 +288,4 @@ public class StdSelectionTool implements DrawTool {
 		return "Selection";
 	}
 }
+

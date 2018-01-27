@@ -416,5 +416,4 @@ public final class StdDrawView extends JComponent implements DrawView {
 			setCursor(context.getTool().getCursor());
 		}
 	}
-
 }

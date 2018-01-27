@@ -44,5 +44,4 @@
         <property name="name"><value>Swisscross</value></property>
         <property name="iconName"><value>swisscross.png</value></property>
     </bean>
-
 </beans>

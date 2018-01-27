@@ -283,3 +283,4 @@ public class SimpleGreenDecorator extends AbstractDecorator {
         super.draw(new GraphicsDecorator(g));
     }
 }
+

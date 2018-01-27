@@ -75,3 +75,4 @@ public class RemoveFigureCommand implements DrawCommand {
 	}
 
 }
+

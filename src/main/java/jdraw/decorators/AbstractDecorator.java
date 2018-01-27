@@ -167,3 +167,4 @@ public class AbstractDecorator implements Figure {
 
     }
 }
+

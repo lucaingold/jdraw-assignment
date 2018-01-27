@@ -119,5 +119,4 @@ public class StdDrawModel implements DrawModel, FigureListener {
         invokeListener(null, DrawModelEvent.Type.DRAWING_CLEARED);
         logger.trace("removeAllFigures");
     }
-
 }
